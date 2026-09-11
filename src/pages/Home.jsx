@@ -14,7 +14,7 @@ import {
 } from '../data/platformData';
 
 export default function Home() {
-  const { openVideoPlayer, showPlatformToast } = useApp();
+  const { openVideoPlayer, showPlatformToast, syncedVideos } = useApp();
 
   // Triple set for seamless infinite cycle (5 + 5 + 5 = 15 slides)
   const EXTENDED_SLIDES = useMemo(() => [
@@ -98,8 +98,15 @@ export default function Home() {
   const [currentPage, setCurrentPage] = useState(1);
   const PAGE_SIZE = 12;
 
+  const catalogBaseList = useMemo(() => {
+    if (syncedVideos && syncedVideos.length > 0 && syncedVideos !== PLATFORM_VIDEOS) {
+      return [...syncedVideos, ...ALL_CATALOG_VIDEOS];
+    }
+    return ALL_CATALOG_VIDEOS;
+  }, [syncedVideos]);
+
   const filteredCatalogVideos = useMemo(() => {
-    let list = ALL_CATALOG_VIDEOS.filter(v => {
+    let list = catalogBaseList.filter(v => {
       const matchCat = catalogCategory === "all" || v.category === catalogCategory;
       const q = searchQuery.toLowerCase().trim();
       const matchQuery = !q ||

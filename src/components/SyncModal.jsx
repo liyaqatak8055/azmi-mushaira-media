@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 
 export default function SyncModal() {
-  const { isSyncModalOpen, closeSyncModal, toggleLiveSimulation, isLiveActive, showPlatformToast } = useApp();
+  const { isSyncModalOpen, closeSyncModal, toggleLiveSimulation, isLiveActive, showPlatformToast, syncYouTubeVideos } = useApp();
   const [apiKey, setApiKey] = useState(() => localStorage.getItem("AZMI_YT_API_KEY") || "");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [statusText, setStatusText] = useState(() => {
     return localStorage.getItem("AZMI_YT_API_KEY")
       ? "🟢 Auto-Sync ACTIVE hai (API Key saved hai)."
@@ -12,29 +13,38 @@ export default function SyncModal() {
 
   if (!isSyncModalOpen) return null;
 
-  const handleSaveKey = () => {
+  const handleSaveKey = async () => {
     const trimmed = apiKey.trim();
     if (trimmed) {
+      setIsSubmitting(true);
       localStorage.setItem("AZMI_YT_API_KEY", trimmed);
-      setStatusText("⏳ YouTube se sync ho raha hai...");
-      setTimeout(() => {
-        setStatusText("✅ Key save ho gayi aur YouTube sync ho gaya!");
-        showPlatformToast("✅ YouTube sync configured!");
-        setTimeout(() => closeSyncModal(), 1200);
-      }, 1000);
+      setStatusText("⏳ YouTube Channel se latest 20 videos fetch ho rahi hain...");
+      const result = await syncYouTubeVideos(trimmed);
+      setIsSubmitting(false);
+      if (result && result.success) {
+        setStatusText(`✅ Zabardast! Channel ki ${result.count || 20} latest videos website par auto-sync ho gayi.`);
+        setTimeout(() => closeSyncModal(), 1400);
+      } else {
+        setStatusText(result && result.message ? `⚠️ ${result.message}` : "⚠️ Sync error. Please check key.");
+      }
     } else {
       localStorage.removeItem("AZMI_YT_API_KEY");
-      setStatusText("Key hata di gayi.");
+      localStorage.removeItem("AZMI_SYNCED_VIDEOS");
+      setStatusText("API Key hata di gayi.");
       showPlatformToast("API Key removed.");
     }
   };
 
-  const handleSyncNow = () => {
-    setStatusText("⏳ YouTube Channel data sync ho raha hai...");
-    setTimeout(() => {
-      setStatusText("✅ Sabhi 6,895+ videos aur live stream check complete!");
-      showPlatformToast("✅ YouTube data sync complete!");
-    }, 900);
+  const handleSyncNow = async () => {
+    setIsSubmitting(true);
+    setStatusText("⏳ YouTube Channel se 20 latest uploads fetch ho rahe hain...");
+    const result = await syncYouTubeVideos();
+    setIsSubmitting(false);
+    if (result && result.success) {
+      setStatusText(`✅ Sync kamyab! ${result.count || 20} nayi videos live ho gayi.`);
+    } else {
+      setStatusText(result && result.message ? `⚠️ ${result.message}` : "Kripya valid API Key enter karein.");
+    }
   };
 
   return (

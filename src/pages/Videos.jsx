@@ -1,9 +1,11 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import VideoCard from '../components/VideoCard';
-import { ALL_CATALOG_VIDEOS } from '../data/platformData';
+import { ALL_CATALOG_VIDEOS, PLATFORM_VIDEOS } from '../data/platformData';
+import { useApp } from '../context/AppContext';
 
 export default function Videos() {
+  const { syncedVideos } = useApp();
   const [searchParams, setSearchParams] = useSearchParams();
   const initialCategory = searchParams.get('cat') || 'all';
 
@@ -30,8 +32,15 @@ export default function Videos() {
     }
   };
 
+  const catalogBaseList = useMemo(() => {
+    if (syncedVideos && syncedVideos.length > 0 && syncedVideos !== PLATFORM_VIDEOS) {
+      return [...syncedVideos, ...ALL_CATALOG_VIDEOS];
+    }
+    return ALL_CATALOG_VIDEOS;
+  }, [syncedVideos]);
+
   const filteredVideos = useMemo(() => {
-    let list = ALL_CATALOG_VIDEOS.filter(v => {
+    let list = catalogBaseList.filter(v => {
       const matchCat = category === "all" || v.category === category;
       const q = searchQuery.toLowerCase().trim();
       const matchQuery = !q ||
