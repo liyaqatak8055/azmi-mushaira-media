@@ -8,15 +8,27 @@ import SyncModal from './components/SyncModal';
 import SupportModal from './components/SupportModal';
 import Toast from './components/Toast';
 import BackToTop from './components/BackToTop';
+import WhatsAppFloat from './components/WhatsAppFloat';
 import Home from './pages/Home';
 import About from './pages/About';
 import Videos from './pages/Videos';
 import Contact from './pages/Contact';
 
-function ScrollToTop() {
+function RouteManager() {
   const { pathname, hash } = useLocation();
 
   useEffect(() => {
+    // Dynamic SEO Titles based on route
+    if (pathname === '/about') {
+      document.title = "About Us & Editorial Mission | AZMI MUSHAIRA MEDIA (عظمیٰ مشاعرہ میڈیا)";
+    } else if (pathname === '/videos') {
+      document.title = "Complete Video Archive & Reports (6,895+) | AZMI MUSHAIRA MEDIA";
+    } else if (pathname === '/contact') {
+      document.title = "Book Event Video Coverage & 24/7 Helpline | AZMI MUSHAIRA MEDIA";
+    } else {
+      document.title = "AZMI MUSHAIRA MEDIA | عظمیٰ مشاعرہ میڈیا - Zameeni Haqeeqat Aur Shayari Ki Mehfil";
+    }
+
     if (hash) {
       const id = hash.replace('#', '');
       const element = document.getElementById(id);
@@ -34,7 +46,7 @@ function ScrollToTop() {
 export default function App() {
   return (
     <AppProvider>
-      <ScrollToTop />
+      <RouteManager />
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -49,6 +61,7 @@ export default function App() {
       <SupportModal />
       <Toast />
       <BackToTop />
+      <WhatsAppFloat />
     </AppProvider>
   );
 }

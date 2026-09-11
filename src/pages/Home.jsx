@@ -672,6 +672,27 @@ export default function Home() {
             ))}
           </div>
 
+          {filteredCatalogVideos.length === 0 && (
+            <div className="catalog-empty-box">
+              <div className="empty-box-icon">🔍</div>
+              <h3 className="empty-box-title">Koi Video Nahi Mili (No Videos Found)</h3>
+              <p className="empty-box-desc">
+                "{searchQuery}" ke liye koi result nahi mila. Kripya doosra shair, shahar ya topic search karein.
+              </p>
+              <button
+                className="btn-action-primary"
+                style={{ marginTop: '14px', padding: '10px 22px', fontSize: '0.86rem' }}
+                onClick={() => {
+                  setSearchQuery("");
+                  setCatalogCategory("all");
+                  setCurrentPage(1);
+                }}
+              >
+                <span>Sabhi Videos Dekhein (Reset Search)</span>
+              </button>
+            </div>
+          )}
+
           {hasMoreCatalog && (
             <div className="catalog-load-more-wrap" style={{ textAlign: 'center', marginTop: '32px' }}>
               <button

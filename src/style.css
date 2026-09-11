@@ -2862,6 +2862,35 @@ button, input, select, textarea {
   gap: 16px;
 }
 
+.catalog-empty-box {
+  text-align: center;
+  padding: 48px 20px;
+  background: #f8fafc;
+  border: 1.5px dashed var(--color-border-medium);
+  border-radius: var(--radius-lg);
+  margin: 20px 0;
+}
+
+.empty-box-icon {
+  font-size: 2.4rem;
+  margin-bottom: 12px;
+}
+
+.empty-box-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--color-text-primary);
+  margin-bottom: 6px;
+}
+
+.empty-box-desc {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  max-width: 480px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
 .editorial-video-card {
   background: #ffffff;
   border: 1px solid var(--color-border-subtle);
@@ -4004,6 +4033,46 @@ button, input, select, textarea {
 .back-to-top-trigger:hover {
   background: var(--color-action-red-hover);
   transform: translateY(-2px);
+}
+
+/* Floating 1-Click WhatsApp Coverage Desk */
+.whatsapp-float-btn {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  height: 48px;
+  background: #25d366;
+  color: #ffffff;
+  border-radius: var(--radius-full);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 18px 0 14px;
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 0.84rem;
+  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.45);
+  z-index: 999;
+  transition: all var(--transition-fast);
+}
+
+.whatsapp-float-btn:hover {
+  background: #20ba5a;
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 10px 26px rgba(37, 211, 102, 0.6);
+  color: #ffffff;
+}
+
+@media (max-width: 600px) {
+  .whatsapp-float-btn {
+    bottom: 20px;
+    left: 16px;
+    height: 44px;
+    padding: 0 10px;
+  }
+  .whatsapp-float-label {
+    display: none;
+  }
 }
 
 /* Toast */

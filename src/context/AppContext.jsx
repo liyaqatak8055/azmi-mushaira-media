@@ -98,19 +98,44 @@ export function AppProvider({ children }) {
       }
 
       if (data.items && data.items.length > 0) {
-        const mapped = data.items.map((item, idx) => ({
-          id: item.id.videoId,
-          title: item.snippet.title,
-          urduTitle: "عظمیٰ مشاعرہ میڈیا آفیشل",
-          category: "all",
-          categoryLabel: "YouTube Upload",
-          duration: "HD",
-          date: new Date(item.snippet.publishedAt).toLocaleDateString(),
-          location: "Azmi Media Official",
-          views: "Latest",
-          featured: idx === 0,
-          thumbnail: item.snippet.thumbnails?.high?.url || `https://i.ytimg.com/vi/${item.id.videoId}/hqdefault.jpg`
-        }));
+        const mapped = data.items.map((item, idx) => {
+          const rawTitle = item.snippet.title || "";
+          const lower = rawTitle.toLowerCase();
+          
+          let cat = "all";
+          let catLabel = "🌟 YouTube Upload";
+          
+          if (lower.match(/mushaira|mehfil|shayari|ghazal|nazm|shair|kavi|kalam|tarannum/)) {
+            cat = "mushaira";
+            catLabel = "🎤 Mushaira | مشاعرہ";
+          } else if (lower.match(/owaisi|chandrashekhar|azad|bjp|sp|congress|bsp|chunav|election|siyasat|assembly|rally|speech|neta|modi|yogi|akhilesh/)) {
+            cat = "politics";
+            catLabel = "🗳️ Siyasat | سیاست";
+          } else if (lower.match(/interview|guftagu|exclusive|bayan|podcast|khas mulaqat/)) {
+            cat = "interviews";
+            catLabel = "🎙️ Bayanat | بیانات";
+          } else if (lower.match(/ground|protest|dharna|insaaf|police|bulldozer|masjid|zameeni|report|breaking/)) {
+            cat = "ground";
+            catLabel = "🌍 Ground Zero | گراؤنڈ زیرو";
+          } else if (lower.match(/naat|deeni|jalsa|dars|roza|ramzan|quran/)) {
+            cat = "islamic";
+            catLabel = "🕌 Deeni Mehfil | دینی محفل";
+          }
+
+          return {
+            id: item.id.videoId,
+            title: rawTitle,
+            urduTitle: "عظمیٰ مشاعرہ میڈیا آفیشل",
+            category: cat,
+            categoryLabel: catLabel,
+            duration: "⚡ 4K HD",
+            date: new Date(item.snippet.publishedAt).toLocaleDateString(),
+            location: "Azmi Media Official",
+            views: "🔥 Latest Upload",
+            featured: idx === 0,
+            thumbnail: item.snippet.thumbnails?.high?.url || `https://i.ytimg.com/vi/${item.id.videoId}/hqdefault.jpg`
+          };
+        });
 
         setSyncedVideos(mapped);
         localStorage.setItem("AZMI_SYNCED_VIDEOS", JSON.stringify(mapped));
@@ -146,6 +171,19 @@ export function AppProvider({ children }) {
       return { success: false, message: err.message };
     }
   };
+
+  // Background Auto-Sync on Mount if API Key exists
+  useEffect(() => {
+    const savedKey = localStorage.getItem("AZMI_YT_API_KEY");
+    if (!savedKey) return;
+
+    const lastSync = localStorage.getItem("AZMI_LAST_SYNC");
+    const now = Date.now();
+    // If not synced in last 15 minutes, silently fetch latest in background
+    if (!lastSync || (now - new Date(lastSync).getTime() > 15 * 60 * 1000)) {
+      syncYouTubeVideos(savedKey);
+    }
+  }, []);
 
   // Keyboard navigation: Escape key closes modals
   useEffect(() => {
