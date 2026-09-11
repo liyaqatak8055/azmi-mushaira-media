@@ -194,11 +194,14 @@ export default function Home() {
     });
   };
 
-  // Lead video for Spotlight and Breaking Coverage
-  const leadVideo = PLATFORM_VIDEOS[0];
-  const secondaryStories = PLATFORM_VIDEOS.slice(1, 3);
-  const upNextVideos = PLATFORM_VIDEOS.slice(1, 4);
-  const groundStories = PLATFORM_VIDEOS.filter(v => v.category === "ground" || v.category === "politics").slice(0, 4);
+  // Lead video for Spotlight and Breaking Coverage (dynamically uses synced YouTube uploads)
+  const videoFeed = (syncedVideos && syncedVideos.length > 0) ? syncedVideos : PLATFORM_VIDEOS;
+  const leadVideo = videoFeed[0] || PLATFORM_VIDEOS[0];
+  const secondaryStories = videoFeed.length > 2 ? videoFeed.slice(1, 3) : PLATFORM_VIDEOS.slice(1, 3);
+  const upNextVideos = videoFeed.length > 3 ? videoFeed.slice(1, 4) : PLATFORM_VIDEOS.slice(1, 4);
+  const groundStories = videoFeed.filter(v => v.category === "ground" || v.category === "politics").length >= 4
+    ? videoFeed.filter(v => v.category === "ground" || v.category === "politics").slice(0, 4)
+    : PLATFORM_VIDEOS.filter(v => v.category === "ground" || v.category === "politics").slice(0, 4);
 
   return (
     <main>
@@ -236,7 +239,15 @@ export default function Home() {
                       }
                     }}
                   >
-                    <img className="hero-slide-bg" src={slide.thumbnail} alt={slide.title} />
+                    <img
+                      className="hero-slide-bg"
+                      src={slide.thumbnail}
+                      alt={slide.title}
+                      onError={(e) => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src = `https://i.ytimg.com/vi/${slide.id}/hqdefault.jpg`;
+                      }}
+                    />
                     <div className="hero-slide-overlay"></div>
                     <div className="hero-slide-brand-pill">{slide.brandLogo}</div>
 
@@ -329,8 +340,18 @@ export default function Home() {
                   className="channel-bubble"
                   aria-label={cat.label}
                 >
-                  <div className="channel-bubble-ring">
-                    <img className="channel-bubble-img" src={cat.icon} alt={cat.label} />
+                  <div
+                    className="channel-bubble-ring"
+                    style={{
+                      background: cat.gradient,
+                      borderColor: cat.borderColor,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      boxShadow: `0 4px 14px ${cat.borderColor}40`
+                    }}
+                  >
+                    <span className="channel-bubble-emoji">{cat.emoji}</span>
                   </div>
                   <span className="channel-bubble-label">{cat.subLabel}</span>
                 </a>
@@ -341,8 +362,18 @@ export default function Home() {
                   className="channel-bubble"
                   aria-label={cat.label}
                 >
-                  <div className={`channel-bubble-ring ${cat.isLive ? 'live' : ''}`}>
-                    <img className="channel-bubble-img" src={cat.icon} alt={cat.label} />
+                  <div
+                    className={`channel-bubble-ring ${cat.isLive ? 'live' : ''}`}
+                    style={{
+                      background: cat.gradient,
+                      borderColor: cat.borderColor,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      boxShadow: `0 4px 14px ${cat.borderColor}40`
+                    }}
+                  >
+                    <span className="channel-bubble-emoji">{cat.emoji}</span>
                     {cat.isLive && <span className="channel-bubble-live-badge">LIVE</span>}
                   </div>
                   <span className="channel-bubble-label">{cat.subLabel}</span>
@@ -364,7 +395,15 @@ export default function Home() {
               onClick={() => openVideoPlayer(leadVideo.id, leadVideo.title, leadVideo.urduTitle)}
             >
               <div className="featured-video-media">
-                <img className="featured-video-thumb" src={leadVideo.thumbnail} alt={leadVideo.title} />
+                <img
+                  className="featured-video-thumb"
+                  src={leadVideo.thumbnail}
+                  alt={leadVideo.title}
+                  onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = `https://i.ytimg.com/vi/${leadVideo.id}/hqdefault.jpg`;
+                  }}
+                />
                 <div className="card-play-hover-indicator">
                   <div className="card-play-disc">
                     <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
@@ -436,7 +475,15 @@ export default function Home() {
                     onClick={() => openVideoPlayer(video.id, video.title, video.urduTitle)}
                   >
                     <div className="upnext-thumb-wrap">
-                      <img src={video.thumbnail} alt={video.title} loading="lazy" />
+                      <img
+                        src={video.thumbnail}
+                        alt={video.title}
+                        loading="lazy"
+                        onError={(e) => {
+                          e.currentTarget.onerror = null;
+                          e.currentTarget.src = `https://i.ytimg.com/vi/${video.id}/hqdefault.jpg`;
+                        }}
+                      />
                       <span className="upnext-duration">{video.duration}</span>
                     </div>
                     <div className="upnext-meta">
@@ -480,7 +527,14 @@ export default function Home() {
               onClick={() => openVideoPlayer(leadVideo.id, leadVideo.title, leadVideo.urduTitle)}
             >
               <div className="breaking-media-box">
-                <img src={leadVideo.thumbnail} alt={leadVideo.title} />
+                <img
+                  src={leadVideo.thumbnail}
+                  alt={leadVideo.title}
+                  onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = `https://i.ytimg.com/vi/${leadVideo.id}/hqdefault.jpg`;
+                  }}
+                />
                 <div className="card-play-hover-indicator">
                   <div className="card-play-disc">
                     <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
@@ -513,7 +567,14 @@ export default function Home() {
                   onClick={() => openVideoPlayer(story.id, story.title, story.urduTitle)}
                 >
                   <div className="breaking-media-box">
-                    <img src={story.thumbnail} alt={story.title} />
+                    <img
+                      src={story.thumbnail}
+                      alt={story.title}
+                      onError={(e) => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src = `https://i.ytimg.com/vi/${story.id}/hqdefault.jpg`;
+                      }}
+                    />
                     <div className="card-play-hover-indicator">
                       <div className="card-play-disc">
                         <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>

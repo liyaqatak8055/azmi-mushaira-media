@@ -561,15 +561,15 @@ export const CAROUSEL_SLIDES = [
 ];
 
 export const CHANNEL_CATEGORIES = [
-  { label: "🔴 LIVE",      subLabel: "Live Coverage",  isLive: true,  icon: "/assets/images/avatar.jpg", link: "/#taaza-coverage" },
-  { label: "🗳️ Siyasat",  subLabel: "UP Politics",    isLive: false, icon: "/assets/images/avatar.jpg", link: "/videos?cat=politics" },
-  { label: "🌍 Ground 0", subLabel: "Zameeni Khabar", isLive: false, icon: "/assets/images/avatar.jpg", link: "/videos?cat=ground" },
-  { label: "🎤 Mushaira", subLabel: "Adabi Mehfil",   isLive: false, icon: "/assets/images/avatar.jpg", link: "/#mushaira" },
-  { label: "📜 Shayari",  subLabel: "Ghazal & Nazm",  isLive: false, icon: "/assets/images/avatar.jpg", link: "/#shayari" },
-  { label: "⚡ Shorts",   subLabel: "Viral Clips",    isLive: false, icon: "/assets/images/avatar.jpg", link: "/#shorts" },
-  { label: "🎙️ Interview",subLabel: "Khas Bayan",    isLive: false, icon: "/assets/images/avatar.jpg", link: "/videos?cat=interviews" },
-  { label: "📺 YouTube",  subLabel: "Subscribe",      isLive: false, icon: "/assets/images/avatar.jpg", link: "https://youtube.com/@AZMIMUSHAIRAMEDIA?sub_confirmation=1", isExternal: true },
-  { label: "🎬 Booking",  subLabel: "Coverage Book",  isLive: false, icon: "/assets/images/avatar.jpg", link: "/contact" }
+  { label: "🔴 LIVE",      subLabel: "Live Coverage",  isLive: true,  emoji: "🔴", gradient: "linear-gradient(135deg, #ef4444, #991b1b)", borderColor: "#ef4444", link: "/#taaza-coverage" },
+  { label: "🎤 Mushaira", subLabel: "Adabi Mehfil",   isLive: false, emoji: "🎤", gradient: "linear-gradient(135deg, #f59e0b, #b45309)", borderColor: "#f59e0b", link: "/#mushaira" },
+  { label: "🗳️ Siyasat",  subLabel: "UP Politics",    isLive: false, emoji: "🗳️", gradient: "linear-gradient(135deg, #10b981, #064e3b)", borderColor: "#10b981", link: "/videos?cat=politics" },
+  { label: "🌍 Ground 0", subLabel: "Zameeni Khabar", isLive: false, emoji: "🌍", gradient: "linear-gradient(135deg, #0284c7, #0369a1)", borderColor: "#0284c7", link: "/videos?cat=ground" },
+  { label: "📜 Shayari",  subLabel: "Ghazal & Nazm",  isLive: false, emoji: "📜", gradient: "linear-gradient(135deg, #d97706, #78350f)", borderColor: "#d97706", link: "/#shayari" },
+  { label: "⚡ Shorts",   subLabel: "Viral Clips",    isLive: false, emoji: "⚡", gradient: "linear-gradient(135deg, #e50914, #831843)", borderColor: "#e50914", link: "/#shorts" },
+  { label: "🎙️ Interview",subLabel: "Khas Bayan",    isLive: false, emoji: "🎙️", gradient: "linear-gradient(135deg, #8b5cf6, #5b21b6)", borderColor: "#8b5cf6", link: "/videos?cat=interviews" },
+  { label: "📺 YouTube",  subLabel: "1.49M Channel",  isLive: false, emoji: "▶️", gradient: "linear-gradient(135deg, #ff0000, #990000)", borderColor: "#ff0000", link: "https://youtube.com/@AZMIMUSHAIRAMEDIA?sub_confirmation=1", isExternal: true },
+  { label: "🎬 Booking",  subLabel: "Event Coverage", isLive: false, emoji: "🎬", gradient: "linear-gradient(135deg, #064e3b, #047857)", borderColor: "#064e3b", link: "/contact" }
 ];
 
 export const SUPPORT_CONTENT = {
