@@ -77,7 +77,7 @@ export default function Admin() {
   } = useApp();
 
   // Login form state
-  const [loginUser, setLoginUser] = useState("admin");
+  const [loginUser, setLoginUser] = useState("");
   const [loginPass, setLoginPass] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loginError, setLoginError] = useState("");
@@ -228,7 +228,7 @@ export default function Admin() {
             <span className="admin-portal-sub">Admin Control Center • انتظام و کنٹرول</span>
           </div>
 
-          <form onSubmit={handleLoginSubmit} className="admin-login-form">
+          <form onSubmit={handleLoginSubmit} className="admin-login-form" autoComplete="off">
             {loginError && <div className="admin-error-alert">{loginError}</div>}
 
             <div className="admin-field-group">
@@ -239,6 +239,7 @@ export default function Admin() {
                 value={loginUser}
                 onChange={(e) => setLoginUser(e.target.value)}
                 placeholder="Enter admin username"
+                autoComplete="off"
                 required
               />
             </div>
@@ -252,6 +253,7 @@ export default function Admin() {
                   value={loginPass}
                   onChange={(e) => setLoginPass(e.target.value)}
                   placeholder="Enter admin password"
+                  autoComplete="new-password"
                   required
                 />
                 <button
@@ -271,10 +273,6 @@ export default function Admin() {
           </form>
 
           <div className="admin-login-footer">
-            <div className="admin-creds-hint">
-              <span>Default Credentials:</span>
-              <code>User: admin</code> | <code>Pass: Azmi@786</code>
-            </div>
             <Link to="/" className="admin-back-site-link">
               ← Return to Main Website (ہوم پیج)
             </Link>

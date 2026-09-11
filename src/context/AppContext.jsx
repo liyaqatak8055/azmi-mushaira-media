@@ -37,7 +37,7 @@ export function AppProvider({ children }) {
       sessionStorage.setItem("AZMI_ADMIN_AUTH", "true");
       return { success: true };
     }
-    return { success: false, message: "Invalid username or password. Default is admin / Azmi@786" };
+    return { success: false, message: "Ghalat Username ya Password! Bara-e-meharbani sahi credentials enter karein." };
   };
 
   const logoutAdmin = () => {
