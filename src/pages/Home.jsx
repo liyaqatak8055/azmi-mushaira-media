@@ -791,37 +791,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ==========================================================================
-          TA'ARUF (ABOUT) PREVIEW SECTION
-          ========================================================================== */}
-      <section className="content-section section-about" id="about">
-        <div className="container">
-          <div style={{ maxWidth: '900px', margin: '0 auto', textAlign: 'center' }}>
-            <span className="section-eyebrow">TA'ARUF | تعارف</span>
-            <h2 className="h2-section-title" style={{ marginBottom: '12px' }}>About Azmi Mushaira Media</h2>
-            <p className="urdu-sub-badge" style={{ textAlign: 'center', marginBottom: '18px', fontSize: '1.15rem' }}>
-              عظمیٰ مشاعرہ میڈیا — بے باک صحافت، زمینی حقائق اور اردو ادب کی پروقار آواز
-            </p>
-            <p className="body-lead" style={{ fontSize: '1rem', marginBottom: '18px' }}>
-              <strong>AZMI MUSHAIRA MEDIA</strong> 24 March 2016 se shuru hokar aaj <strong>1.49M+ subscribers</strong>, <strong>6,895 se zyada videos</strong> aur <strong>53 Crore (530M+) views</strong> ke sath Ground Zero be-khauf reporting, All India Mushaira aur Hindustani adab ka sabse mutabar digital platform hai.
-            </p>
-            <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', flexWrap: 'wrap', marginBottom: '24px' }}>
-              <span style={{ background: '#ecfdf5', border: '1px solid rgba(6,78,59,0.18)', color: '#064e3b', padding: '6px 14px', borderRadius: '999px', fontWeight: 800, fontSize: '0.85rem' }}>👥 1.49M Subscribers</span>
-              <span style={{ background: '#ecfdf5', border: '1px solid rgba(6,78,59,0.18)', color: '#064e3b', padding: '6px 14px', borderRadius: '999px', fontWeight: 800, fontSize: '0.85rem' }}>📈 530M+ Total Views</span>
-              <span style={{ background: '#ecfdf5', border: '1px solid rgba(6,78,59,0.18)', color: '#064e3b', padding: '6px 14px', borderRadius: '999px', fontWeight: 800, fontSize: '0.85rem' }}>📹 6,895 Videos</span>
-              <span style={{ background: '#ecfdf5', border: '1px solid rgba(6,78,59,0.18)', color: '#064e3b', padding: '6px 14px', borderRadius: '999px', fontWeight: 800, fontSize: '0.85rem' }}>🇮🇳 India (Since Mar 2016)</span>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'center', gap: '14px', flexWrap: 'wrap' }}>
-              <Link to="/about" className="btn-action-primary">
-                <span>Poora Ta'aruf Padhein (Read About Us) →</span>
-              </Link>
-              <Link to="/contact" className="btn-action-secondary">
-                <span>Book Event Coverage</span>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* ==========================================================================
           COVERAGE BOOKING FORM SECTION
