@@ -5,7 +5,8 @@ import { useApp } from '../context/AppContext';
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { openSyncModal, isLiveActive, liveDetails, openVideoPlayer } = useApp();
+  const [isBannerDismissed, setIsBannerDismissed] = useState(false);
+  const { openSyncModal, isLiveActive, liveDetails, openVideoPlayer, toggleLiveSimulation } = useApp();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -299,7 +300,7 @@ export default function Navbar() {
       </header>
 
       {/* Dynamic YouTube Live Stream Alert Banner */}
-      {isLiveActive && (
+      {isLiveActive && !isBannerDismissed && (
         <div className="yt-live-alert-strip" id="ytLiveAlertStrip" style={{ display: 'block', padding: '8px 0' }}>
           <div className="container yt-live-alert-inner" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px' }}>
             <div className="live-pulse-indicator">
@@ -329,7 +330,7 @@ export default function Navbar() {
                 </svg>
               </button>
               <button
-                onClick={toggleLiveSimulation}
+                onClick={() => setIsBannerDismissed(true)}
                 title="Dismiss Live Alert"
                 aria-label="Dismiss Live Alert"
                 style={{
