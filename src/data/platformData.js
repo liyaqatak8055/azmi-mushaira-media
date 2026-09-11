@@ -561,15 +561,15 @@ export const CAROUSEL_SLIDES = [
 ];
 
 export const CHANNEL_CATEGORIES = [
-  { label: "🔴 LIVE",      subLabel: "Live Coverage",  isLive: true,  icon: "https://i.ytimg.com/vi/RQj92m7s9tQ/hqdefault.jpg", link: "/#taaza-coverage" },
-  { label: "🗳️ Siyasat",  subLabel: "UP Politics",    isLive: false, icon: "https://i.ytimg.com/vi/Nnmk3rFo-yE/hqdefault.jpg", link: "/videos?cat=politics" },
-  { label: "🌍 Ground 0", subLabel: "Zameeni Khabar", isLive: false, icon: "https://i.ytimg.com/vi/gELiv6WJm0I/hqdefault.jpg", link: "/videos?cat=ground" },
-  { label: "🎤 Mushaira", subLabel: "Adabi Mehfil",   isLive: false, icon: "https://i.ytimg.com/vi/VJ7gDXyOSCY/hqdefault.jpg", link: "/#mushaira" },
-  { label: "📜 Shayari",  subLabel: "Ghazal & Nazm",  isLive: false, icon: "https://i.ytimg.com/vi/-saYXyKGPIk/hqdefault.jpg", link: "/#shayari" },
-  { label: "⚡ Shorts",   subLabel: "Viral Clips",    isLive: false, icon: "https://i.ytimg.com/vi/f-NJP3ssVDA/hqdefault.jpg", link: "/#shorts" },
-  { label: "🎙️ Interview",subLabel: "Khas Bayan",    isLive: false, icon: "https://i.ytimg.com/vi/oc8dFJ6Wa8U/hqdefault.jpg", link: "/videos?cat=interviews" },
+  { label: "🔴 LIVE",      subLabel: "Live Coverage",  isLive: true,  icon: "/assets/images/avatar.jpg", link: "/#taaza-coverage" },
+  { label: "🗳️ Siyasat",  subLabel: "UP Politics",    isLive: false, icon: "/assets/images/avatar.jpg", link: "/videos?cat=politics" },
+  { label: "🌍 Ground 0", subLabel: "Zameeni Khabar", isLive: false, icon: "/assets/images/avatar.jpg", link: "/videos?cat=ground" },
+  { label: "🎤 Mushaira", subLabel: "Adabi Mehfil",   isLive: false, icon: "/assets/images/avatar.jpg", link: "/#mushaira" },
+  { label: "📜 Shayari",  subLabel: "Ghazal & Nazm",  isLive: false, icon: "/assets/images/avatar.jpg", link: "/#shayari" },
+  { label: "⚡ Shorts",   subLabel: "Viral Clips",    isLive: false, icon: "/assets/images/avatar.jpg", link: "/#shorts" },
+  { label: "🎙️ Interview",subLabel: "Khas Bayan",    isLive: false, icon: "/assets/images/avatar.jpg", link: "/videos?cat=interviews" },
   { label: "📺 YouTube",  subLabel: "Subscribe",      isLive: false, icon: "/assets/images/avatar.jpg", link: "https://youtube.com/@AZMIMUSHAIRAMEDIA?sub_confirmation=1", isExternal: true },
-  { label: "🎬 Booking",  subLabel: "Coverage Book",  isLive: false, icon: "https://i.ytimg.com/vi/sYi5H3UqLCM/hqdefault.jpg", link: "/contact" }
+  { label: "🎬 Booking",  subLabel: "Coverage Book",  isLive: false, icon: "/assets/images/avatar.jpg", link: "/contact" }
 ];
 
 export const SUPPORT_CONTENT = {
