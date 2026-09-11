@@ -413,7 +413,8 @@ button, input, select, textarea {
   align-items: center;
   justify-content: space-between;
   overflow: hidden;
-  padding: 0 32px;
+  padding: 0 28px;
+  position: relative;
 }
 
 .announcement-left {
@@ -422,11 +423,23 @@ button, input, select, textarea {
   height: 100%;
   overflow: hidden;
   flex-grow: 1;
+  position: relative;
+}
+
+.announcement-badge-wrap {
+  display: inline-flex;
+  align-items: center;
+  height: 100%;
+  background: var(--color-header-green-bar);
+  position: relative;
+  z-index: 15;
+  padding-right: 14px;
+  flex-shrink: 0;
+  box-shadow: 14px 0 16px -4px var(--color-header-green-bar);
 }
 
 .announcement-badge {
   position: relative;
-  z-index: 10;
   background: var(--color-action-red);
   color: #ffffff;
   font-weight: 800;
@@ -438,10 +451,9 @@ button, input, select, textarea {
   display: flex;
   align-items: center;
   gap: 5px;
-  margin-right: 12px;
   white-space: nowrap;
   flex-shrink: 0;
-  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
 }
 
 .pulse-indicator {
@@ -464,20 +476,24 @@ button, input, select, textarea {
   display: flex;
   align-items: center;
   height: 100%;
+  mask-image: linear-gradient(to right, transparent 0px, black 28px, black calc(100% - 28px), transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0px, black 28px, black calc(100% - 28px), transparent 100%);
 }
 
 .announcement-ticker-track {
   display: flex;
   white-space: nowrap;
   animation: ticker-scroll 32s linear infinite;
+  will-change: transform;
 }
 
 .ticker-entry {
   display: inline-flex;
   align-items: center;
-  margin-right: 40px;
+  margin-right: 48px;
   color: #e2e8f0;
   font-size: 0.78rem;
+  white-space: nowrap;
 }
 
 .ticker-entry strong {
@@ -499,11 +515,13 @@ button, input, select, textarea {
   color: #fde047;
   white-space: nowrap;
   flex-shrink: 0;
-  padding-left: 16px;
+  padding: 0 16px;
   border-left: 1px solid rgba(255, 255, 255, 0.15);
   position: relative;
-  z-index: 10;
+  z-index: 15;
   background: var(--color-header-green-bar);
+  box-shadow: -14px 0 16px -4px var(--color-header-green-bar);
+  height: 100%;
   transition: color var(--transition-fast);
 }
 
@@ -513,13 +531,13 @@ button, input, select, textarea {
 
 /* Layer 2: Main Nav (Clean Full Width starting from Left with Breathing Room) */
 .header-main-nav {
-  height: 72px;
-  padding: 0 32px;
+  height: 70px;
+  padding: 0 28px;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 20px;
+  gap: 16px;
 }
 
 .brand-identity {
@@ -531,8 +549,8 @@ button, input, select, textarea {
 }
 
 .brand-avatar-frame {
-  width: 46px;
-  height: 46px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   padding: 2px;
   background: linear-gradient(135deg, #dfba73, #ffffff);
@@ -558,7 +576,7 @@ button, input, select, textarea {
 }
 
 .brand-name {
-  font-size: 1.26rem;
+  font-size: 1.22rem;
   font-weight: 900;
   letter-spacing: -0.015em;
   color: #ffffff;
@@ -567,7 +585,7 @@ button, input, select, textarea {
 }
 
 .brand-tagline-sub {
-  font-size: 0.76rem;
+  font-size: 0.74rem;
   font-weight: 600;
   color: #fde047;
   letter-spacing: 0.02em;
@@ -578,52 +596,53 @@ button, input, select, textarea {
 .desktop-nav-wrapper {
   display: flex;
   justify-content: center;
+  align-items: center;
   flex-grow: 1;
+  min-width: 0;
 }
 
 .nav-menu-desktop {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 3px;
   list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 .nav-menu-link {
-  font-size: 0.88rem;
+  font-family: var(--font-family-latin);
+  font-size: 0.86rem;
   font-weight: 700;
   color: #f1f5f9;
-  padding: 8px 12px;
-  border-radius: var(--radius-sm);
+  padding: 7px 11px;
+  border-radius: 6px;
   position: relative;
   transition: all var(--transition-fast);
+  white-space: nowrap !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  line-height: 1;
+  text-decoration: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
 }
 
 .nav-menu-link:hover {
   color: #facc15;
-  background: rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.12);
 }
 
 .nav-menu-link.active {
   color: #ffffff;
-  background: rgba(0, 0, 0, 0.28);
+  background: rgba(255, 255, 255, 0.12);
+  border-bottom: 2px solid #facc15;
 }
 
 .nav-menu-link::after {
-  content: '';
-  position: absolute;
-  bottom: 4px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 0;
-  height: 2px;
-  background: #facc15;
-  border-radius: 1px;
-  transition: var(--transition-fast);
-}
-
-.nav-menu-link:hover::after,
-.nav-menu-link.active::after {
-  width: calc(100% - 20px);
+  display: none;
 }
 
 .header-cta-group {
@@ -4277,6 +4296,31 @@ textarea.input-control {
   .mini-card-thumb-frame,
   .ground-card-thumb {
     height: 148px;
+  }
+}
+
+@media (max-width: 1200px) and (min-width: 1024px) {
+  .header-main-nav {
+    padding: 0 16px;
+    gap: 10px;
+  }
+  .nav-menu-link {
+    font-size: 0.82rem;
+    padding: 6px 8px;
+  }
+  .brand-name {
+    font-size: 1.12rem;
+  }
+  .brand-tagline-sub {
+    font-size: 0.68rem;
+  }
+  .btn-action-youtube {
+    padding: 6px 12px;
+    font-size: 0.78rem;
+  }
+  .header-sync-btn {
+    padding: 5px 9px;
+    font-size: 0.72rem;
   }
 }
 

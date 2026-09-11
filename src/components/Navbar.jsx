@@ -60,10 +60,12 @@ export default function Navbar() {
         {/* Layer 1: Top Announcement Ticker Bar */}
         <div className="header-announcement-bar">
           <div className="announcement-left">
-            <span className="announcement-badge">
-              <span className="pulse-indicator"></span>
-              <span>OFFICIAL DESK</span>
-            </span>
+            <div className="announcement-badge-wrap">
+              <span className="announcement-badge">
+                <span className="pulse-indicator"></span>
+                <span>OFFICIAL DESK</span>
+              </span>
+            </div>
             <div className="ticker-scroll-window">
               <div className="announcement-ticker-track">
                 <span className="ticker-entry">
@@ -111,7 +113,6 @@ export default function Navbar() {
                 <button
                   type="button"
                   className="nav-menu-link"
-                  style={{ background: 'none', border: 'none', cursor: 'pointer' }}
                   onClick={() => handleAnchorClick('taaza-coverage')}
                 >
                   Coverage
@@ -121,7 +122,7 @@ export default function Navbar() {
                 <button
                   type="button"
                   className="nav-menu-link"
-                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-accent-gold)', fontWeight: 800 }}
+                  style={{ color: 'var(--color-accent-gold)', fontWeight: 800 }}
                   onClick={() => handleAnchorClick('popular-videos')}
                 >
                   🔥 Popular
@@ -129,47 +130,16 @@ export default function Navbar() {
               </li>
               <li>
                 <Link to="/videos" className={`nav-menu-link ${location.pathname === '/videos' ? 'active' : ''}`}>
-                  🎬 All Videos
+                  Videos
                 </Link>
               </li>
               <li>
                 <button
                   type="button"
                   className="nav-menu-link"
-                  style={{ background: 'none', border: 'none', cursor: 'pointer' }}
                   onClick={() => handleAnchorClick('mushaira')}
                 >
                   Mushaira
-                </button>
-              </li>
-              <li>
-                <button
-                  type="button"
-                  className="nav-menu-link"
-                  style={{ background: 'none', border: 'none', cursor: 'pointer' }}
-                  onClick={() => handleAnchorClick('shayari')}
-                >
-                  Shayari
-                </button>
-              </li>
-              <li>
-                <button
-                  type="button"
-                  className="nav-menu-link"
-                  style={{ background: 'none', border: 'none', cursor: 'pointer' }}
-                  onClick={() => handleAnchorClick('shorts')}
-                >
-                  Shorts
-                </button>
-              </li>
-              <li>
-                <button
-                  type="button"
-                  className="nav-menu-link"
-                  style={{ background: 'none', border: 'none', cursor: 'pointer' }}
-                  onClick={() => handleAnchorClick('ground-zero')}
-                >
-                  Ground Zero
                 </button>
               </li>
               <li>
@@ -179,7 +149,7 @@ export default function Navbar() {
               </li>
               <li>
                 <Link to="/contact" className={`nav-menu-link ${location.pathname === '/contact' ? 'active' : ''}`}>
-                  Booking
+                  Contact
                 </Link>
               </li>
             </ul>
