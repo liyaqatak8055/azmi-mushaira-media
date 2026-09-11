@@ -1,0 +1,38 @@
+h2{
+    color: green;
+}
+
+.box{
+    border:3px solid black;
+    width:350px;
+    padding:15px;
+    transition:0.5s;
+}
+
+.box:hover{
+    transform:translateX(50px)
+}
+
+.menu{
+    display: flex;
+    gap: 25px;
+    justify-content: left;
+    padding: auto;
+    margin: auto;
+
+}
+
+.cards{
+    display:flex;
+    gap:20px;
+    flex-direction: column;
+    width: 120px;
+    margin: 30px;
+    background-color: lightgoldenrodyellow;
+    text-shadow: 20px 20px 20px black;
+}
+
+.card{
+    border: 2px solid black;
+    padding: 20px;
+}
