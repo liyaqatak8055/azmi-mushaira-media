@@ -35,13 +35,13 @@ export default function Home() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Auto-scroll cycle: moves every ~1.2s like an endless wheel (smooth gliding motion)
+  // Auto-scroll cycle: moves every 5 seconds like an endless wheel (smooth gliding motion)
   useEffect(() => {
     if (isPaused) return;
     const timer = setInterval(() => {
       setIsTransitionEnabled(true);
       setCurrentSlideIndex(prev => prev + 1);
-    }, 1200);
+    }, 5000);
     return () => clearInterval(timer);
   }, [isPaused]);
 
