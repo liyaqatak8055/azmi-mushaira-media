@@ -300,27 +300,55 @@ export default function Navbar() {
 
       {/* Dynamic YouTube Live Stream Alert Banner */}
       {isLiveActive && (
-        <div className="yt-live-alert-strip" id="ytLiveAlertStrip" style={{ display: 'block' }}>
-          <div className="container yt-live-alert-inner">
+        <div className="yt-live-alert-strip" id="ytLiveAlertStrip" style={{ display: 'block', padding: '8px 0' }}>
+          <div className="container yt-live-alert-inner" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px' }}>
             <div className="live-pulse-indicator">
               <span className="pulse-dot"></span>
-              <span className="live-tag">🔴 LIVE BROADCAST</span>
+              <span className="live-tag">LIVE BROADCAST</span>
             </div>
-            <div className="live-title-wrap">
-              <span className="live-stream-title" id="liveStreamTitle">
-                {liveDetails.title}
+            <div className="live-title-wrap" style={{ flex: 1, minWidth: '240px', padding: '0 8px' }}>
+              <span className="live-stream-title" id="liveStreamTitle" style={{
+                display: '-webkit-box',
+                WebkitLineClamp: 1,
+                WebkitBoxOrient: 'vertical',
+                overflow: 'hidden',
+                fontSize: '0.92rem'
+              }}>
+                {(liveDetails?.title || "").replace(/^[🔴\s]*LIVE\s*:\s*/i, "").trim()}
               </span>
             </div>
-            <div className="live-cta-wrap">
+            <div className="live-cta-wrap" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <button
                 className="btn-live-watch"
                 id="btnWatchLiveNow"
                 onClick={() => openVideoPlayer(liveDetails.id, liveDetails.title, "لائیو نشریات")}
               >
-                <span>Abhi Dekhein (Watch Live)</span>
+                <span>Abhi Dekhein</span>
                 <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M8 5v14l11-7z" />
                 </svg>
+              </button>
+              <button
+                onClick={toggleLiveSimulation}
+                title="Dismiss Live Alert"
+                aria-label="Dismiss Live Alert"
+                style={{
+                  background: 'rgba(0, 0, 0, 0.4)',
+                  border: '1px solid rgba(255, 255, 255, 0.3)',
+                  color: '#ffffff',
+                  borderRadius: '50%',
+                  width: '28px',
+                  height: '28px',
+                  cursor: 'pointer',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '0.82rem',
+                  lineHeight: 1,
+                  padding: 0
+                }}
+              >
+                ✕
               </button>
             </div>
           </div>

@@ -16,14 +16,21 @@ import {
 export default function Home() {
   const { openVideoPlayer, showPlatformToast, feedVideos } = useApp();
 
-  // 1. HERO CAROUSEL STATE
+  // 1. HERO CAROUSEL STATE & CENTERING CALCULATION
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const slideCount = CAROUSEL_SLIDES.length;
+  const [windowWidth, setWindowWidth] = useState(() => typeof window !== 'undefined' ? window.innerWidth : 1200);
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlideIndex(prev => (prev + 1) % slideCount);
-    }, 5000);
+    }, 5500);
     return () => clearInterval(timer);
   }, [slideCount]);
 
@@ -34,6 +41,11 @@ export default function Home() {
   const nextSlide = () => {
     setCurrentSlideIndex(prev => (prev + 1) % slideCount);
   };
+
+  const isMobile = windowWidth <= 900;
+  const slideWidth = isMobile ? windowWidth * 0.88 : 860;
+  const slideGap = isMobile ? 12 : 22;
+  const trackOffset = (windowWidth / 2) - (slideWidth / 2) - (currentSlideIndex * (slideWidth + slideGap));
 
   // 2. POPULAR FILTER STATE
   const [popularCategory, setPopularCategory] = useState("all");
@@ -123,111 +135,141 @@ export default function Home() {
   return (
     <main>
       {/* ==========================================================================
-          HERO CAROUSEL SECTION
+          1. HERO CAROUSEL SECTION (Centered JioTV Multi-Card Presentation)
           ========================================================================== */}
       <section className="hero-cinema-section" id="home">
         <div className="hero-carousel-container" id="heroCarousel">
-          <div
-            className="hero-slides-track"
-            id="heroCarouselTrack"
-            style={{
-              transform: `translateX(-${currentSlideIndex * 100}%)`,
-              transition: 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)'
-            }}
-          >
-            {CAROUSEL_SLIDES.map((slide, idx) => (
-              <div className={`hero-slide-item ${idx === currentSlideIndex ? 'active' : ''}`} key={idx}>
-                <img className="hero-slide-bg" src={slide.thumbnail} alt={slide.title} />
-                <div className="hero-slide-gradient"></div>
-                <div className="container hero-slide-content">
-                  <div className="hero-slide-badges">
-                    <span className={`badge-category ${slide.badgeClass}`}>{slide.badge}</span>
-                    <span className="hero-badge-tag">{slide.brandLogo}</span>
+          <div className="hero-carousel-track-wrapper">
+            <div
+              className="hero-carousel-track"
+              id="heroCarouselTrack"
+              style={{
+                transform: `translateX(${trackOffset}px)`
+              }}
+            >
+              {CAROUSEL_SLIDES.map((slide, idx) => {
+                const isActive = idx === currentSlideIndex;
+                return (
+                  <div
+                    className={`hero-slide ${isActive ? 'active' : ''}`}
+                    key={idx}
+                    onClick={() => {
+                      if (!isActive) setCurrentSlideIndex(idx);
+                      else openVideoPlayer(slide.id, slide.title, slide.urduTitle);
+                    }}
+                  >
+                    <img className="hero-slide-bg" src={slide.thumbnail} alt={slide.title} />
+                    <div className="hero-slide-overlay"></div>
+                    <div className="hero-slide-brand-pill">{slide.brandLogo}</div>
+
+                    <div className="hero-slide-content">
+                      <div className="hero-slide-badges">
+                        <span className={`badge-category ${slide.badgeClass}`}>{slide.badge}</span>
+                      </div>
+                      <h2 className="hero-slide-title">{slide.title}</h2>
+                      <p className="hero-slide-urdu">{slide.urduTitle}</p>
+                      <div className="hero-slide-meta">
+                        <span>📍 {slide.location}</span>
+                        <span>⏱️ {slide.duration}</span>
+                        <span className="hero-slide-hd-tag">⚡ 4K Ultra HD</span>
+                      </div>
+                      <div className="hero-slide-actions">
+                        <button
+                          className="btn-action-primary"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            openVideoPlayer(slide.id, slide.title, slide.urduTitle);
+                          }}
+                        >
+                          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
+                          <span>Abhi Dekhein</span>
+                        </button>
+                        <a
+                          href={`https://youtube.com/watch?v=${slide.id}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="btn-action-secondary"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <span>YouTube Par Kholein</span>
+                        </a>
+                      </div>
+                    </div>
                   </div>
-                  <h2 className="hero-slide-title">{slide.title}</h2>
-                  <p className="urdu-sub-badge hero-slide-urdu">{slide.urduTitle}</p>
-                  <div className="hero-slide-meta">
-                    <span>📍 {slide.location}</span>
-                    <span>⏱️ {slide.duration}</span>
-                    <span style={{ color: 'var(--color-accent-gold)', fontWeight: 800 }}>⚡ 4K Ultra HD</span>
-                  </div>
-                  <div className="hero-slide-actions">
-                    <button
-                      className="btn-action-primary"
-                      onClick={() => openVideoPlayer(slide.id, slide.title, slide.urduTitle)}
-                    >
-                      <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
-                      <span>Abhi Dekhein</span>
-                    </button>
-                    <a
-                      href={`https://youtube.com/watch?v=${slide.id}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="btn-action-secondary"
-                    >
-                      <span>YouTube Par Kholein</span>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            ))}
+                );
+              })}
+            </div>
           </div>
 
-          <button className="carousel-nav-arrow arrow-prev" onClick={prevSlide} aria-label="Previous Slide">‹</button>
-          <button className="carousel-nav-arrow arrow-next" onClick={nextSlide} aria-label="Next Slide">›</button>
+          {/* Navigation Arrows */}
+          <button className="hero-carousel-prev" onClick={prevSlide} aria-label="Previous Slide">
+            <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" /></svg>
+          </button>
+          <button className="hero-carousel-next" onClick={nextSlide} aria-label="Next Slide">
+            <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" /></svg>
+          </button>
 
-          <div className="carousel-dots-wrapper" id="carouselDots">
-            {CAROUSEL_SLIDES.map((_, idx) => (
-              <button
-                key={idx}
-                className={`carousel-dot ${idx === currentSlideIndex ? 'active' : ''}`}
-                onClick={() => setCurrentSlideIndex(idx)}
-                aria-label={`Go to slide ${idx + 1}`}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* OTT Channels Circular Bubbles Rail */}
-        <div className="channels-rail-strip" id="channelsRailStrip">
-          <div className="channels-rail-inner" id="channelsRailInner">
-            <div className="channels-train-track">
-              {CHANNEL_CATEGORIES.concat(CHANNEL_CATEGORIES).map((cat, i) => (
-                cat.isExternal ? (
-                  <a
-                    href={cat.link}
-                    key={i}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="channel-bubble"
-                    aria-label={cat.label}
-                  >
-                    <div className="channel-bubble-ring">
-                      <img className="channel-bubble-img" src={cat.icon} alt={cat.label} />
-                    </div>
-                    <span className="channel-bubble-label">{cat.subLabel}</span>
-                  </a>
-                ) : (
-                  <Link
-                    to={cat.link}
-                    key={i}
-                    className="channel-bubble"
-                    aria-label={cat.label}
-                  >
-                    <div className={`channel-bubble-ring ${cat.isLive ? 'live' : ''}`}>
-                      <img className="channel-bubble-img" src={cat.icon} alt={cat.label} />
-                      {cat.isLive && <span className="channel-bubble-live-badge">LIVE</span>}
-                    </div>
-                    <span className="channel-bubble-label">{cat.subLabel}</span>
-                  </Link>
-                )
+          {/* Centered Pagination Dots */}
+          <div className="hero-carousel-dots-container" id="carouselDots">
+            <div className="hero-carousel-dots">
+              {CAROUSEL_SLIDES.map((_, idx) => (
+                <button
+                  key={idx}
+                  className={`carousel-dot ${idx === currentSlideIndex ? 'active' : ''}`}
+                  onClick={() => setCurrentSlideIndex(idx)}
+                  aria-label={`Go to slide ${idx + 1}`}
+                />
               ))}
             </div>
           </div>
         </div>
+      </section>
 
-        {/* Featured Video Spotlight & Up Next Strip */}
-        <div className="container" style={{ marginTop: '36px' }}>
+      {/* ==========================================================================
+          2. OTT CHANNELS CONTINUOUS TRAIN MARQUEE (JioTV Circular Bubbles)
+          ========================================================================== */}
+      <section className="ott-channels-rail" id="channelsRailStrip">
+        <div className="channels-rail-inner" id="channelsRailInner">
+          <div className="channels-train-track">
+            {CHANNEL_CATEGORIES.concat(CHANNEL_CATEGORIES).map((cat, i) => (
+              cat.isExternal ? (
+                <a
+                  href={cat.link}
+                  key={i}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="channel-bubble"
+                  aria-label={cat.label}
+                >
+                  <div className="channel-bubble-ring">
+                    <img className="channel-bubble-img" src={cat.icon} alt={cat.label} />
+                  </div>
+                  <span className="channel-bubble-label">{cat.subLabel}</span>
+                </a>
+              ) : (
+                <Link
+                  to={cat.link}
+                  key={i}
+                  className="channel-bubble"
+                  aria-label={cat.label}
+                >
+                  <div className={`channel-bubble-ring ${cat.isLive ? 'live' : ''}`}>
+                    <img className="channel-bubble-img" src={cat.icon} alt={cat.label} />
+                    {cat.isLive && <span className="channel-bubble-live-badge">LIVE</span>}
+                  </div>
+                  <span className="channel-bubble-label">{cat.subLabel}</span>
+                </Link>
+              )
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ==========================================================================
+          3. FEATURED VIDEO SPOTLIGHT & UP NEXT STRIP
+          ========================================================================== */}
+      <section className="featured-spotlight-section" id="taaza-coverage" style={{ padding: '24px 0 32px', background: '#f8fafc' }}>
+        <div className="container">
           <div className="featured-spotlight-grid">
             <div
               className="featured-video-card"
