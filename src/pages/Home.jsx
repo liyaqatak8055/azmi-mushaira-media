@@ -230,7 +230,7 @@ export default function Home() {
   ].filter(Boolean);
 
   const popularVideosList = useMemo(() => {
-    let list = [...POPULAR_VIDEOS];
+    let list = [...POPULAR_CHANNEL_VIDEOS];
     if (gridOverrides?.popular1) list[0] = { ...list[0], ...gridOverrides.popular1, viewsText: "6.8M Views" };
     if (gridOverrides?.popular2) list[1] = { ...list[1], ...gridOverrides.popular2, viewsText: "4.5M Views" };
     if (gridOverrides?.popular3) list[2] = { ...list[2], ...gridOverrides.popular3, viewsText: "3.9M Views" };
