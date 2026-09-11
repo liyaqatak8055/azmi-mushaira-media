@@ -55,15 +55,27 @@ export default function Navbar() {
 
   return (
     <>
-      {/* Top Announcement & Booking Ticker */}
-      <div className="top-announcement-strip">
-        <div className="container announcement-inner">
-          <div className="announcement-left-group">
-            <span className="announcement-pill-badge">OFFICIAL DESK</span>
-            <div className="ticker-text-wrapper">
-              <span className="ticker-animated-text">
-                📹 All India Mushaira, Mazhabi Jalse, Political Press Conferences aur Public Programs ki professional 4K Ultra HD multi-cam recording &amp; live coverage ke liye booking open hai!
-              </span>
+      {/* Main Header */}
+      <header className={`site-header-wrapper ${isScrolled ? 'scrolled' : ''}`} id="siteHeader">
+        {/* Layer 1: Top Announcement Ticker Bar */}
+        <div className="header-announcement-bar">
+          <div className="announcement-left">
+            <span className="announcement-badge">
+              <span className="pulse-indicator"></span>
+              <span>OFFICIAL DESK</span>
+            </span>
+            <div className="ticker-scroll-window">
+              <div className="announcement-ticker-track">
+                <span className="ticker-entry">
+                  <strong>📹 Event Coverage:</strong> All India Mushaira, Mazhabi Jalse, Political Press Conferences aur Public Programs ki professional 4K Ultra HD multi-cam recording &amp; live coverage ke liye booking open hai!
+                </span>
+                <span className="ticker-entry">
+                  <strong>⚡ Azmi Mushaira Media:</strong> Desh bhar mein 150+ se zyada All India Mushaira aur Ground Zero reports live cover karne wala No.1 digital platform.
+                </span>
+                <span className="ticker-entry">
+                  <strong>📹 Event Coverage:</strong> All India Mushaira, Mazhabi Jalse, Political Press Conferences aur Public Programs ki professional 4K Ultra HD multi-cam recording &amp; live coverage ke liye booking open hai!
+                </span>
+              </div>
             </div>
           </div>
           <Link to="/contact" className="announcement-right-cta">
@@ -73,10 +85,8 @@ export default function Navbar() {
             </svg>
           </Link>
         </div>
-      </div>
 
-      {/* Main Header */}
-      <header className={`site-header-wrapper ${isScrolled ? 'scrolled' : ''}`} id="siteHeader">
+        {/* Layer 2: Main Navigation Bar */}
         <div className="header-main-nav">
           {/* Logo & Brand */}
           <Link to="/" className="brand-identity" id="brandLogoLink" aria-label="AZMI MUSHAIRA MEDIA Home">
