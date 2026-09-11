@@ -2,7 +2,7 @@ import React from 'react';
 import { useApp } from '../context/AppContext';
 
 export default function VideoModal() {
-  const { activeVideo, closeVideoPlayer, showPlatformToast } = useApp();
+  const { activeVideo, closeVideoPlayer, showPlatformToast, adsConfig = {} } = useApp();
 
   if (!activeVideo) return null;
 
@@ -48,6 +48,17 @@ export default function VideoModal() {
             title={activeVideo.title}
           />
         </div>
+        {adsConfig?.playerSponsor?.enabled && (
+          <div className="theater-sponsor-banner">
+            <span className="sponsor-pill">SPONSORED</span>
+            <div className="sponsor-text">
+              <strong>{adsConfig.playerSponsor.sponsorName}</strong>: {adsConfig.playerSponsor.promoText}
+            </div>
+            <a href={adsConfig.playerSponsor.link || "https://youtube.com/@AZMIMUSHAIRAMEDIA"} target="_blank" rel="noopener noreferrer" className="sponsor-link-btn">
+              Explore →
+            </a>
+          </div>
+        )}
         <div className="theater-modal-footer">
           <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
             <button

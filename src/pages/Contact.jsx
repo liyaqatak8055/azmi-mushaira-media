@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 
 export default function Contact() {
-  const { showPlatformToast } = useApp();
+  const { showPlatformToast, addBookingLead } = useApp();
 
   const [bookingForm, setBookingForm] = useState({
     name: "",
@@ -18,6 +18,10 @@ export default function Contact() {
     if (!bookingForm.name || !bookingForm.phone || !bookingForm.city) {
       showPlatformToast("Kripya Naam, Phone aur City zaroor bharein!");
       return;
+    }
+
+    if (addBookingLead) {
+      addBookingLead(bookingForm);
     }
 
     const bookingMessage = `*Official Event Coverage Booking Request*\n` +

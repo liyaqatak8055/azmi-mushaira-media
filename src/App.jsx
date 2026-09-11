@@ -13,13 +13,16 @@ import Home from './pages/Home';
 import About from './pages/About';
 import Videos from './pages/Videos';
 import Contact from './pages/Contact';
+import Admin from './pages/Admin';
 
 function RouteManager() {
   const { pathname, hash } = useLocation();
 
   useEffect(() => {
     // Dynamic SEO Titles based on route
-    if (pathname === '/about') {
+    if (pathname === '/admin') {
+      document.title = "Admin Control Center & CMS | AZMI MUSHAIRA MEDIA (عظمیٰ مشاعرہ میڈیا)";
+    } else if (pathname === '/about') {
       document.title = "About Us & Editorial Mission | AZMI MUSHAIRA MEDIA (عظمیٰ مشاعرہ میڈیا)";
     } else if (pathname === '/videos') {
       document.title = "Complete Video Archive & Reports (6,895+) | AZMI MUSHAIRA MEDIA";
@@ -43,25 +46,37 @@ function RouteManager() {
   return null;
 }
 
-export default function App() {
+function MainLayout() {
+  const { pathname } = useLocation();
+  const isAdmin = pathname.startsWith('/admin');
+
   return (
-    <AppProvider>
+    <>
       <RouteManager />
-      <Navbar />
+      {!isAdmin && <Navbar />}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/videos" element={<Videos />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/admin" element={<Admin />} />
         <Route path="*" element={<Home />} />
       </Routes>
-      <Footer />
+      {!isAdmin && <Footer />}
       <VideoModal />
       <SyncModal />
       <SupportModal />
       <Toast />
-      <BackToTop />
-      <WhatsAppFloat />
+      {!isAdmin && <BackToTop />}
+      {!isAdmin && <WhatsAppFloat />}
+    </>
+  );
+}
+
+export default function App() {
+  return (
+    <AppProvider>
+      <MainLayout />
     </AppProvider>
   );
 }

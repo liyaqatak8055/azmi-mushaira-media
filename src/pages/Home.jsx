@@ -14,13 +14,13 @@ import {
 } from '../data/platformData';
 
 export default function Home() {
-  const { openVideoPlayer, showPlatformToast, syncedVideos } = useApp();
+  const { openVideoPlayer, showPlatformToast, syncedVideos, gridOverrides = {}, adsConfig = {}, addBookingLead } = useApp();
 
   // Dynamic 20 Carousel Slides from synced YouTube uploads (or fallback to curated PLATFORM_VIDEOS)
   const baseSlides = useMemo(() => {
     const sourceList = (syncedVideos && syncedVideos.length > 0) ? syncedVideos : PLATFORM_VIDEOS;
     const list = sourceList.slice(0, 20);
-    return list.map((video, idx) => ({
+    const slides = list.map((video, idx) => ({
       id: video.id,
       title: video.title,
       urduTitle: video.urduTitle || "عظمیٰ مشاعرہ میڈیا آفیشل",
@@ -32,7 +32,19 @@ export default function Home() {
         ? video.thumbnail.replace('hqdefault.jpg', 'maxresdefault.jpg')
         : (video.thumbnail || `https://i.ytimg.com/vi/${video.id}/maxresdefault.jpg`)
     }));
-  }, [syncedVideos]);
+
+    // Inject Admin Slot Overrides if present
+    if (gridOverrides?.heroSlide1) {
+      slides[0] = { ...slides[0], ...gridOverrides.heroSlide1, brandLogo: "SPOTLIGHT SPECIAL" };
+    }
+    if (gridOverrides?.heroSlide2 && slides.length > 1) {
+      slides[1] = { ...slides[1], ...gridOverrides.heroSlide2 };
+    }
+    if (gridOverrides?.heroSlide3 && slides.length > 2) {
+      slides[2] = { ...slides[2], ...gridOverrides.heroSlide3 };
+    }
+    return slides;
+  }, [syncedVideos, gridOverrides]);
 
   const numSlides = baseSlides.length || 20;
 
@@ -173,6 +185,10 @@ export default function Home() {
       return;
     }
 
+    if (addBookingLead) {
+      addBookingLead(bookingForm);
+    }
+
     const bookingMessage = `*Official Event Coverage Booking Request*\n` +
       `*Platform:* AZMI MUSHAIRA MEDIA (@AZMIMUSHAIRAMEDIA)\n\n` +
       `👤 *Organizer:* ${bookingForm.name}\n` +
@@ -195,14 +211,45 @@ export default function Home() {
     });
   };
 
-  // Lead video for Spotlight and Breaking Coverage (dynamically uses synced YouTube uploads)
+  // Lead video for Spotlight and Breaking Coverage (dynamically uses synced YouTube uploads or Admin Overrides)
   const videoFeed = (syncedVideos && syncedVideos.length > 0) ? syncedVideos : PLATFORM_VIDEOS;
-  const leadVideo = videoFeed[0] || PLATFORM_VIDEOS[0];
-  const secondaryStories = videoFeed.length > 2 ? videoFeed.slice(1, 3) : PLATFORM_VIDEOS.slice(1, 3);
-  const upNextVideos = videoFeed.length > 3 ? videoFeed.slice(1, 4) : PLATFORM_VIDEOS.slice(1, 4);
-  const groundStories = videoFeed.filter(v => v.category === "ground" || v.category === "politics").length >= 4
-    ? videoFeed.filter(v => v.category === "ground" || v.category === "politics").slice(0, 4)
-    : PLATFORM_VIDEOS.filter(v => v.category === "ground" || v.category === "politics").slice(0, 4);
+  const leadVideo = gridOverrides?.spotlightLead || videoFeed[0] || PLATFORM_VIDEOS[0];
+  const taazaLeadVideo = gridOverrides?.taazaLead || videoFeed[0] || PLATFORM_VIDEOS[0];
+  const secondaryStories = [
+    gridOverrides?.taazaSecondary1 || videoFeed[1] || PLATFORM_VIDEOS[1],
+    gridOverrides?.taazaSecondary2 || videoFeed[2] || PLATFORM_VIDEOS[2]
+  ];
+  const upNextVideos = [
+    gridOverrides?.upNext1 || videoFeed[1] || PLATFORM_VIDEOS[1],
+    gridOverrides?.upNext2 || videoFeed[2] || PLATFORM_VIDEOS[2],
+    gridOverrides?.upNext3 || videoFeed[3] || PLATFORM_VIDEOS[3]
+  ];
+  const groundStories = [
+    gridOverrides?.ground1 || videoFeed.find(v => v.category === "ground") || PLATFORM_VIDEOS.find(v => v.category === "ground"),
+    gridOverrides?.ground2 || videoFeed.find(v => v.category === "politics") || PLATFORM_VIDEOS.find(v => v.category === "politics")
+  ].filter(Boolean);
+
+  const popularVideosList = useMemo(() => {
+    let list = [...POPULAR_VIDEOS];
+    if (gridOverrides?.popular1) list[0] = { ...list[0], ...gridOverrides.popular1, viewsText: "6.8M Views" };
+    if (gridOverrides?.popular2) list[1] = { ...list[1], ...gridOverrides.popular2, viewsText: "4.5M Views" };
+    if (gridOverrides?.popular3) list[2] = { ...list[2], ...gridOverrides.popular3, viewsText: "3.9M Views" };
+    return list;
+  }, [gridOverrides]);
+
+  const mushairaVideosList = useMemo(() => {
+    let list = [...MUSHAIRA_PERFORMANCES];
+    if (gridOverrides?.mushaira1) list[0] = { ...list[0], ...gridOverrides.mushaira1, poet: gridOverrides.mushaira1.title };
+    if (gridOverrides?.mushaira2) list[1] = { ...list[1], ...gridOverrides.mushaira2, poet: gridOverrides.mushaira2.title };
+    return list;
+  }, [gridOverrides]);
+
+  const shortsList = useMemo(() => {
+    let list = [...PLATFORM_SHORTS];
+    if (gridOverrides?.shorts1) list[0] = { ...list[0], ...gridOverrides.shorts1 };
+    if (gridOverrides?.shorts2) list[1] = { ...list[1], ...gridOverrides.shorts2 };
+    return list;
+  }, [gridOverrides]);
 
   const getHdThumb = (v) => {
     if (!v) return "";
@@ -404,6 +451,27 @@ export default function Home() {
       </section>
 
       {/* ==========================================================================
+          AD BANNER: HERO BOTTOM / SPONSOR BAR
+          ========================================================================== */}
+      {adsConfig?.heroBottom?.enabled && (
+        <section className="container" style={{ margin: '18px auto 0' }}>
+          <div className="home-hero-ad-banner">
+            <div className="ad-banner-badge">📢 SPONSORED / اشتہار</div>
+            <div className="ad-banner-content">
+              <h3>{adsConfig.heroBottom.title}</h3>
+              <p>{adsConfig.heroBottom.subtitle}</p>
+            </div>
+            <a
+              href={adsConfig.heroBottom.link || "/contact"}
+              className="btn-action-primary ad-banner-cta"
+            >
+              {adsConfig.heroBottom.buttonText || "Book Event Coverage"}
+            </a>
+          </div>
+        </section>
+      )}
+
+      {/* ==========================================================================
           3. FEATURED VIDEO SPOTLIGHT & UP NEXT STRIP
           ========================================================================== */}
       <section className="featured-spotlight-section" id="spotlight-section" style={{ padding: '24px 0 32px', background: '#f8fafc' }}>
@@ -543,15 +611,15 @@ export default function Home() {
           <div className="breaking-grid-layout">
             <article
               className="breaking-lead-card is-lead"
-              onClick={() => openVideoPlayer(leadVideo.id, leadVideo.title, leadVideo.urduTitle)}
+              onClick={() => openVideoPlayer(taazaLeadVideo.id, taazaLeadVideo.title, taazaLeadVideo.urduTitle)}
             >
               <div className="breaking-media-box">
                 <img
-                  src={getHdThumb(leadVideo)}
-                  alt={leadVideo.title}
+                  src={getHdThumb(taazaLeadVideo)}
+                  alt={taazaLeadVideo.title}
                   onError={(e) => {
                     e.currentTarget.onerror = null;
-                    e.currentTarget.src = `https://i.ytimg.com/vi/${leadVideo.id}/hqdefault.jpg`;
+                    e.currentTarget.src = `https://i.ytimg.com/vi/${taazaLeadVideo.id}/hqdefault.jpg`;
                   }}
                 />
                 <div className="card-play-hover-indicator">
@@ -563,16 +631,16 @@ export default function Home() {
                   <span className="badge-category cat-breaking">🔴 LATEST HEADLINE</span>
                   <span className="badge-category cat-politics">4K MULTI-CAM</span>
                 </div>
-                <span className="featured-video-duration">{leadVideo.duration}</span>
+                <span className="featured-video-duration">{taazaLeadVideo.duration}</span>
               </div>
               <div className="breaking-lead-body">
                 <div>
-                  <span className="editorial-kicker">{leadVideo.location} EXCLUSIVE</span>
-                  <h3 className="video-card-title" style={{ fontSize: '1.24rem', marginTop: '6px' }}>{leadVideo.title}</h3>
-                  <span className="urdu-sub-badge" style={{ textAlign: 'left', fontSize: '0.98rem', marginTop: '4px' }}>{leadVideo.urduTitle}</span>
+                  <span className="editorial-kicker">{taazaLeadVideo.location} EXCLUSIVE</span>
+                  <h3 className="video-card-title" style={{ fontSize: '1.24rem', marginTop: '6px' }}>{taazaLeadVideo.title}</h3>
+                  <span className="urdu-sub-badge" style={{ textAlign: 'left', fontSize: '0.98rem', marginTop: '4px' }}>{taazaLeadVideo.urduTitle}</span>
                 </div>
                 <div className="video-card-footer" style={{ marginTop: '14px' }}>
-                  <span>{leadVideo.date} • {leadVideo.location}</span>
+                  <span>{taazaLeadVideo.date} • {taazaLeadVideo.location}</span>
                   <span style={{ color: 'var(--color-header-green)', fontWeight: 800 }}>▶ Dekhein</span>
                 </div>
               </div>
@@ -657,7 +725,7 @@ export default function Home() {
           </div>
 
           <div className="popular-videos-grid">
-            {filteredPopularVideos.map((video, idx) => (
+            {(popularCategory === 'all' ? popularVideosList : filteredPopularVideos).map((video, idx) => (
               <VideoCard video={video} variant="popular" index={idx} key={video.id + idx} />
             ))}
           </div>
@@ -790,6 +858,19 @@ export default function Home() {
       {/* ==========================================================================
           ALL INDIA MUSHAIRA SECTION
           ========================================================================== */}
+      {adsConfig?.mushairaSponsor?.enabled && (
+        <section className="container" style={{ marginBottom: '18px' }}>
+          <div className="mushaira-sponsor-bar">
+            <span className="sponsor-tag">PARTNER SPONSOR</span>
+            <div className="sponsor-text">
+              <strong>{adsConfig.mushairaSponsor.title}</strong> — {adsConfig.mushairaSponsor.subtitle}
+            </div>
+            <a href={adsConfig.mushairaSponsor.link || "https://youtube.com/@AZMIMUSHAIRAMEDIA"} target="_blank" rel="noopener noreferrer" className="btn-sponsor-visit">
+              Visit Sponsor →
+            </a>
+          </div>
+        </section>
+      )}
       <section className="content-section section-mushaira" id="mushaira">
         <div className="container">
           <div className="section-header-row">
@@ -807,7 +888,7 @@ export default function Home() {
           </div>
 
           <div className="mushaira-cards-grid">
-            {MUSHAIRA_PERFORMANCES.map((item, idx) => (
+            {mushairaVideosList.map((item, idx) => (
               <VideoCard video={item} variant="mushaira" index={idx} key={item.id + idx} />
             ))}
           </div>
@@ -865,7 +946,7 @@ export default function Home() {
           </div>
 
           <div className="shorts-horizontal-track">
-            {PLATFORM_SHORTS.map((short, idx) => (
+            {shortsList.map((short, idx) => (
               <VideoCard video={short} variant="short" index={idx} key={short.id + idx} />
             ))}
           </div>

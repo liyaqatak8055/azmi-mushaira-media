@@ -6,7 +6,7 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isBannerDismissed, setIsBannerDismissed] = useState(false);
-  const { openSyncModal, isLiveActive, liveDetails, openVideoPlayer, toggleLiveSimulation } = useApp();
+  const { openSyncModal, isLiveActive, liveDetails, openVideoPlayer, toggleLiveSimulation, adsConfig = {}, tickerText } = useApp();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -68,15 +68,23 @@ export default function Navbar() {
             </div>
             <div className="ticker-scroll-window">
               <div className="announcement-ticker-track">
-                <span className="ticker-entry">
-                  <strong>📹 Event Coverage:</strong> All India Mushaira, Mazhabi Jalse, Political Press Conferences aur Public Programs ki professional 4K Ultra HD multi-cam recording &amp; live coverage ke liye booking open hai!
-                </span>
-                <span className="ticker-entry">
-                  <strong>⚡ Azmi Mushaira Media:</strong> Desh bhar mein 150+ se zyada All India Mushaira aur Ground Zero reports live cover karne wala No.1 digital platform.
-                </span>
-                <span className="ticker-entry">
-                  <strong>📹 Event Coverage:</strong> All India Mushaira, Mazhabi Jalse, Political Press Conferences aur Public Programs ki professional 4K Ultra HD multi-cam recording &amp; live coverage ke liye booking open hai!
-                </span>
+                {adsConfig?.topHeader?.enabled ? (
+                  <span className="ticker-entry">
+                    <strong style={{ color: '#ef4444' }}>[{adsConfig.topHeader.badge || 'SPONSORED'}]:</strong> {adsConfig.topHeader.text}
+                  </span>
+                ) : (
+                  <>
+                    <span className="ticker-entry">
+                      <strong>📢 {tickerText || "Azmi Mushaira Media"}</strong>
+                    </span>
+                    <span className="ticker-entry">
+                      <strong>⚡ Coverage Booking:</strong> All India Mushaira, Mazhabi Jalse aur Public Programs ki professional 4K multi-cam coverage ke liye booking open hai!
+                    </span>
+                    <span className="ticker-entry">
+                      <strong>📢 {tickerText || "Azmi Mushaira Media"}</strong>
+                    </span>
+                  </>
+                )}
               </div>
             </div>
           </div>
@@ -165,8 +173,9 @@ export default function Navbar() {
             </Link>
 
             <button
-              className={`header-sync-btn ${isLiveActive ? 'is-live' : ''}`}
-              id="headerSyncBtn"
+              type="button"
+              className={`btn-action-sync ${isLiveActive ? 'is-live' : ''}`}
+              id="headerSyncTrigger"
               onClick={openSyncModal}
               title="YouTube Live & New Video Auto-Sync"
               aria-label="YouTube Auto-Sync"
@@ -174,6 +183,14 @@ export default function Navbar() {
               <span className="sync-dot"></span>
               <span className="sync-text">{isLiveActive ? "🔴 LIVE NOW" : "Auto-Sync"}</span>
             </button>
+
+            <Link
+              to="/admin"
+              className="btn-header-admin-link"
+              title="Admin Control Center"
+            >
+              ⚙️ Admin
+            </Link>
 
             <a
               href="https://youtube.com/@AZMIMUSHAIRAMEDIA?sub_confirmation=1"
@@ -266,6 +283,9 @@ export default function Navbar() {
           </Link>
           <Link to="/contact" className="mobile-link" onClick={() => setIsMobileMenuOpen(false)}>
             <span>Coverage Booking</span> <span className="label-meta">بکنگ</span>
+          </Link>
+          <Link to="/admin" className="mobile-link" onClick={() => setIsMobileMenuOpen(false)} style={{ color: 'var(--color-accent-gold)', fontWeight: 700 }}>
+            <span>⚙️ Admin Control Center</span> <span className="label-meta">انتظام</span>
           </Link>
           <a
             href="https://youtube.com/@AZMIMUSHAIRAMEDIA"

@@ -14,6 +14,200 @@ export function AppProvider({ children }) {
   // YouTube Sync Modal State
   const [isSyncModalOpen, setIsSyncModalOpen] = useState(false);
 
+  // Admin Authentication State
+  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(() => {
+    try {
+      return sessionStorage.getItem("AZMI_ADMIN_AUTH") === "true";
+    } catch {
+      return false;
+    }
+  });
+
+  const [adminPassword, setAdminPassword] = useState(() => {
+    try {
+      return localStorage.getItem("AZMI_ADMIN_PASS") || "Azmi@786";
+    } catch {
+      return "Azmi@786";
+    }
+  });
+
+  const loginAdmin = (username, password) => {
+    if (username.trim().toLowerCase() === "admin" && password === adminPassword) {
+      setIsAdminLoggedIn(true);
+      sessionStorage.setItem("AZMI_ADMIN_AUTH", "true");
+      return { success: true };
+    }
+    return { success: false, message: "Invalid username or password. Default is admin / Azmi@786" };
+  };
+
+  const logoutAdmin = () => {
+    setIsAdminLoggedIn(false);
+    sessionStorage.removeItem("AZMI_ADMIN_AUTH");
+  };
+
+  const changeAdminPassword = (oldPass, newPass) => {
+    if (oldPass !== adminPassword) {
+      return { success: false, message: "Current password does not match." };
+    }
+    if (!newPass || newPass.length < 4) {
+      return { success: false, message: "New password must be at least 4 characters." };
+    }
+    setAdminPassword(newPass);
+    localStorage.setItem("AZMI_ADMIN_PASS", newPass);
+    return { success: true };
+  };
+
+  // Grid / Container Video Slot Overrides (Mapping slotKey -> custom video object)
+  const [gridOverrides, setGridOverrides] = useState(() => {
+    try {
+      const saved = localStorage.getItem("AZMI_GRID_OVERRIDES");
+      return saved ? JSON.parse(saved) : {};
+    } catch {
+      return {};
+    }
+  });
+
+  const setGridSlotVideo = (slotKey, videoData) => {
+    setGridOverrides(prev => {
+      const updated = { ...prev, [slotKey]: videoData };
+      localStorage.setItem("AZMI_GRID_OVERRIDES", JSON.stringify(updated));
+      return updated;
+    });
+    showPlatformToast(`✅ Slot "${slotKey}" video updated successfully!`);
+  };
+
+  const clearGridSlotVideo = (slotKey) => {
+    setGridOverrides(prev => {
+      const updated = { ...prev };
+      delete updated[slotKey];
+      localStorage.setItem("AZMI_GRID_OVERRIDES", JSON.stringify(updated));
+      return updated;
+    });
+    showPlatformToast(`ℹ️ Slot "${slotKey}" restored to default.`);
+  };
+
+  const resetAllGridSlots = () => {
+    setGridOverrides({});
+    localStorage.removeItem("AZMI_GRID_OVERRIDES");
+    showPlatformToast("🔄 All video containers reset to default feed.");
+  };
+
+  // Ads & Sponsorship Config
+  const DEFAULT_ADS = {
+    topHeader: {
+      enabled: false,
+      badge: "SPONSORED",
+      text: "🎙️ Book Azmi Media 4K Multi-Cam Coverage for All India Mushaira & Jalsa across India!",
+      link: "/contact"
+    },
+    heroBottom: {
+      enabled: true,
+      title: "Grand All India Mushaira 2026 — Book Official 4K Multi-Cam Coverage",
+      subtitle: "Full Stage Multi-Camera Switching & High-Gain Audio Console • Call/WhatsApp: +91 9451329571",
+      image: "",
+      link: "/contact",
+      buttonText: "Book Now (بکنگ)"
+    },
+    mushairaSponsor: {
+      enabled: false,
+      title: "Featured Cultural Partner",
+      subtitle: "All India Mushaira & Adabi Mehfil Official Broadcast Partner",
+      image: "",
+      link: "https://youtube.com/@AZMIMUSHAIRAMEDIA"
+    },
+    playerSponsor: {
+      enabled: true,
+      sponsorName: "AZMI MUSHAIRA MEDIA",
+      promoText: "Official YouTube Channel — 1.49M Subscribers & 6,800+ Mehfils",
+      link: "https://youtube.com/@AZMIMUSHAIRAMEDIA"
+    }
+  };
+
+  const [adsConfig, setAdsConfig] = useState(() => {
+    try {
+      const saved = localStorage.getItem("AZMI_ADS_CONFIG");
+      return saved ? { ...DEFAULT_ADS, ...JSON.parse(saved) } : DEFAULT_ADS;
+    } catch {
+      return DEFAULT_ADS;
+    }
+  });
+
+  const updateAdPlacement = (slotKey, newSettings) => {
+    setAdsConfig(prev => {
+      const updated = {
+        ...prev,
+        [slotKey]: { ...prev[slotKey], ...newSettings }
+      };
+      localStorage.setItem("AZMI_ADS_CONFIG", JSON.stringify(updated));
+      return updated;
+    });
+    showPlatformToast(`📢 Ad placement "${slotKey}" updated.`);
+  };
+
+  const toggleAdPlacement = (slotKey) => {
+    setAdsConfig(prev => {
+      const current = prev[slotKey] || {};
+      const updated = {
+        ...prev,
+        [slotKey]: { ...current, enabled: !current.enabled }
+      };
+      localStorage.setItem("AZMI_ADS_CONFIG", JSON.stringify(updated));
+      return updated;
+    });
+  };
+
+  // Breaking Ticker Text
+  const [tickerText, setTickerText] = useState(() => {
+    return localStorage.getItem("AZMI_TICKER_TEXT") || "عظمیٰ مشاعرہ میڈیا • 1.49M Subscribers • All India Mushaira, Ground Reality & UP Siyasat 24x7";
+  });
+
+  const updateTickerText = (text) => {
+    setTickerText(text);
+    localStorage.setItem("AZMI_TICKER_TEXT", text);
+    showPlatformToast("📢 Breaking Ticker updated!");
+  };
+
+  // Event Booking Leads (from Contact form)
+  const [bookingLeads, setBookingLeads] = useState(() => {
+    try {
+      const saved = localStorage.getItem("AZMI_BOOKING_LEADS");
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  const addBookingLead = (lead) => {
+    const newLead = {
+      id: Date.now().toString(),
+      timestamp: new Date().toISOString(),
+      status: "New",
+      ...lead
+    };
+    setBookingLeads(prev => {
+      const updated = [newLead, ...prev];
+      localStorage.setItem("AZMI_BOOKING_LEADS", JSON.stringify(updated));
+      return updated;
+    });
+  };
+
+  const updateBookingLeadStatus = (leadId, status) => {
+    setBookingLeads(prev => {
+      const updated = prev.map(l => l.id === leadId ? { ...l, status } : l);
+      localStorage.setItem("AZMI_BOOKING_LEADS", JSON.stringify(updated));
+      return updated;
+    });
+  };
+
+  const deleteBookingLead = (leadId) => {
+    setBookingLeads(prev => {
+      const updated = prev.filter(l => l.id !== leadId);
+      localStorage.setItem("AZMI_BOOKING_LEADS", JSON.stringify(updated));
+      return updated;
+    });
+    showPlatformToast("Lead deleted.");
+  };
+
   // Synced Videos Feed (Fallbacks to PLATFORM_VIDEOS)
   const [syncedVideos, setSyncedVideos] = useState(() => {
     try {
@@ -211,12 +405,32 @@ export function AppProvider({ children }) {
         openSyncModal,
         closeSyncModal,
         isLiveActive,
+        setIsLiveActive,
         liveDetails,
+        setLiveDetails,
         toggleLiveSimulation,
         toastMessage,
         showPlatformToast,
         syncedVideos,
-        syncYouTubeVideos
+        syncYouTubeVideos,
+        // Admin & Customizations
+        isAdminLoggedIn,
+        loginAdmin,
+        logoutAdmin,
+        changeAdminPassword,
+        gridOverrides,
+        setGridSlotVideo,
+        clearGridSlotVideo,
+        resetAllGridSlots,
+        adsConfig,
+        updateAdPlacement,
+        toggleAdPlacement,
+        tickerText,
+        updateTickerText,
+        bookingLeads,
+        addBookingLead,
+        updateBookingLeadStatus,
+        deleteBookingLead
       }}
     >
       {children}
