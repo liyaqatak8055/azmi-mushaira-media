@@ -16,9 +16,17 @@ import {
 export default function Home() {
   const { openVideoPlayer, showPlatformToast } = useApp();
 
+  // Triple set for seamless infinite cycle (5 + 5 + 5 = 15 slides)
+  const EXTENDED_SLIDES = useMemo(() => [
+    ...CAROUSEL_SLIDES,
+    ...CAROUSEL_SLIDES,
+    ...CAROUSEL_SLIDES
+  ], []);
+
   // 1. HERO CAROUSEL STATE & CENTERING CALCULATION
-  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
-  const slideCount = CAROUSEL_SLIDES.length;
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(5);
+  const [isTransitionEnabled, setIsTransitionEnabled] = useState(true);
+  const [isPaused, setIsPaused] = useState(false);
   const [windowWidth, setWindowWidth] = useState(() => typeof window !== 'undefined' ? window.innerWidth : 1200);
 
   useEffect(() => {
@@ -27,25 +35,54 @@ export default function Home() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // Auto-scroll cycle: moves every ~1.2s like an endless wheel (smooth gliding motion)
   useEffect(() => {
+    if (isPaused) return;
     const timer = setInterval(() => {
-      setCurrentSlideIndex(prev => (prev + 1) % slideCount);
-    }, 5500);
+      setIsTransitionEnabled(true);
+      setCurrentSlideIndex(prev => prev + 1);
+    }, 1200);
     return () => clearInterval(timer);
-  }, [slideCount]);
+  }, [isPaused]);
+
+  // Seamless boundary wrap on transition end (imperceptible teleport to middle set)
+  const handleTransitionEnd = () => {
+    if (currentSlideIndex >= 10) {
+      setIsTransitionEnabled(false);
+      setCurrentSlideIndex(currentSlideIndex - 5);
+    } else if (currentSlideIndex < 5) {
+      setIsTransitionEnabled(false);
+      setCurrentSlideIndex(currentSlideIndex + 5);
+    }
+  };
+
+  // Turn transitions back on after boundary wrap in the next frame
+  useEffect(() => {
+    if (!isTransitionEnabled) {
+      const raf = requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          setIsTransitionEnabled(true);
+        });
+      });
+      return () => cancelAnimationFrame(raf);
+    }
+  }, [isTransitionEnabled]);
 
   const prevSlide = () => {
-    setCurrentSlideIndex(prev => (prev - 1 + slideCount) % slideCount);
+    setIsTransitionEnabled(true);
+    setCurrentSlideIndex(prev => prev - 1);
   };
 
   const nextSlide = () => {
-    setCurrentSlideIndex(prev => (prev + 1) % slideCount);
+    setIsTransitionEnabled(true);
+    setCurrentSlideIndex(prev => prev + 1);
   };
 
   const isMobile = windowWidth <= 900;
   const slideWidth = isMobile ? windowWidth * 0.88 : 860;
   const slideGap = isMobile ? 12 : 22;
   const trackOffset = (windowWidth / 2) - (slideWidth / 2) - (currentSlideIndex * (slideWidth + slideGap));
+  const activeDotIndex = currentSlideIndex % 5;
 
   // 2. POPULAR FILTER STATE
   const [popularCategory, setPopularCategory] = useState("all");
@@ -137,25 +174,35 @@ export default function Home() {
       {/* ==========================================================================
           1. HERO CAROUSEL SECTION (Centered JioTV Multi-Card Presentation)
           ========================================================================== */}
-      <section className="hero-cinema-section" id="home">
+      <section
+        className="hero-cinema-section"
+        id="home"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+      >
         <div className="hero-carousel-container" id="heroCarousel">
           <div className="hero-carousel-track-wrapper">
             <div
-              className="hero-carousel-track"
+              className={`hero-carousel-track ${!isTransitionEnabled ? 'no-transition' : ''}`}
               id="heroCarouselTrack"
               style={{
                 transform: `translateX(${trackOffset}px)`
               }}
+              onTransitionEnd={handleTransitionEnd}
             >
-              {CAROUSEL_SLIDES.map((slide, idx) => {
+              {EXTENDED_SLIDES.map((slide, idx) => {
                 const isActive = idx === currentSlideIndex;
                 return (
                   <div
                     className={`hero-slide ${isActive ? 'active' : ''}`}
                     key={idx}
                     onClick={() => {
-                      if (!isActive) setCurrentSlideIndex(idx);
-                      else openVideoPlayer(slide.id, slide.title, slide.urduTitle);
+                      if (!isActive) {
+                        setIsTransitionEnabled(true);
+                        setCurrentSlideIndex(idx);
+                      } else {
+                        openVideoPlayer(slide.id, slide.title, slide.urduTitle);
+                      }
                     }}
                   >
                     <img className="hero-slide-bg" src={slide.thumbnail} alt={slide.title} />
@@ -215,8 +262,11 @@ export default function Home() {
               {CAROUSEL_SLIDES.map((_, idx) => (
                 <button
                   key={idx}
-                  className={`carousel-dot ${idx === currentSlideIndex ? 'active' : ''}`}
-                  onClick={() => setCurrentSlideIndex(idx)}
+                  className={`carousel-dot ${idx === activeDotIndex ? 'active' : ''}`}
+                  onClick={() => {
+                    setIsTransitionEnabled(true);
+                    setCurrentSlideIndex(5 + idx);
+                  }}
                   aria-label={`Go to slide ${idx + 1}`}
                 />
               ))}
@@ -268,7 +318,7 @@ export default function Home() {
       {/* ==========================================================================
           3. FEATURED VIDEO SPOTLIGHT & UP NEXT STRIP
           ========================================================================== */}
-      <section className="featured-spotlight-section" id="taaza-coverage" style={{ padding: '24px 0 32px', background: '#f8fafc' }}>
+      <section className="featured-spotlight-section" id="spotlight-section" style={{ padding: '24px 0 32px', background: '#f8fafc' }}>
         <div className="container">
           <div className="featured-spotlight-grid">
             <div
@@ -386,28 +436,30 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="breaking-coverage-grid">
+          <div className="breaking-grid-layout">
             <article
               className="breaking-lead-card is-lead"
               onClick={() => openVideoPlayer(leadVideo.id, leadVideo.title, leadVideo.urduTitle)}
             >
-              <div className="video-card-thumb-frame">
+              <div className="breaking-media-box">
                 <img src={leadVideo.thumbnail} alt={leadVideo.title} />
                 <div className="card-play-hover-indicator">
                   <div className="card-play-disc">
                     <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
                   </div>
                 </div>
-                <div style={{ position: 'absolute', top: '12px', left: '12px', display: 'flex', gap: '6px' }}>
+                <div style={{ position: 'absolute', top: '12px', left: '12px', display: 'flex', gap: '6px', zIndex: 3 }}>
                   <span className="badge-category cat-breaking">🔴 LATEST HEADLINE</span>
                   <span className="badge-category cat-politics">4K MULTI-CAM</span>
                 </div>
                 <span className="featured-video-duration">{leadVideo.duration}</span>
               </div>
-              <div className="video-card-body">
-                <span className="editorial-kicker">{leadVideo.location} EXCLUSIVE</span>
-                <h3 className="video-card-title" style={{ fontSize: '1.28rem' }}>{leadVideo.title}</h3>
-                <span className="urdu-sub-badge" style={{ textAlign: 'left', fontSize: '0.98rem' }}>{leadVideo.urduTitle}</span>
+              <div className="breaking-lead-body">
+                <div>
+                  <span className="editorial-kicker">{leadVideo.location} EXCLUSIVE</span>
+                  <h3 className="video-card-title" style={{ fontSize: '1.24rem', marginTop: '6px' }}>{leadVideo.title}</h3>
+                  <span className="urdu-sub-badge" style={{ textAlign: 'left', fontSize: '0.98rem', marginTop: '4px' }}>{leadVideo.urduTitle}</span>
+                </div>
                 <div className="video-card-footer" style={{ marginTop: '14px' }}>
                   <span>{leadVideo.date} • {leadVideo.location}</span>
                   <span style={{ color: 'var(--color-header-green)', fontWeight: 800 }}>▶ Dekhein</span>
@@ -415,29 +467,31 @@ export default function Home() {
               </div>
             </article>
 
-            <div className="breaking-secondary-column">
+            <div className="breaking-aside-list">
               {secondaryStories.map((story, i) => (
                 <article
                   className="breaking-lead-card"
                   key={i}
                   onClick={() => openVideoPlayer(story.id, story.title, story.urduTitle)}
                 >
-                  <div className="video-card-thumb-frame">
+                  <div className="breaking-media-box">
                     <img src={story.thumbnail} alt={story.title} />
                     <div className="card-play-hover-indicator">
                       <div className="card-play-disc">
                         <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
                       </div>
                     </div>
-                    <div style={{ position: 'absolute', top: '8px', left: '8px' }}>
+                    <div style={{ position: 'absolute', top: '8px', left: '8px', zIndex: 3 }}>
                       <span className={`badge-category cat-${story.category}`}>{story.categoryLabel}</span>
                     </div>
                     <span className="featured-video-duration">{story.duration}</span>
                   </div>
-                  <div className="video-card-body">
-                    <h3 className="video-card-title" style={{ fontSize: '1.02rem' }}>{story.title}</h3>
-                    <span className="urdu-sub-badge" style={{ textAlign: 'left' }}>{story.urduTitle}</span>
-                    <div className="video-card-footer">
+                  <div className="breaking-lead-body">
+                    <div>
+                      <h3 className="video-card-title" style={{ fontSize: '1.02rem', marginTop: '4px' }}>{story.title}</h3>
+                      <span className="urdu-sub-badge" style={{ textAlign: 'left', fontSize: '0.88rem', marginTop: '2px' }}>{story.urduTitle}</span>
+                    </div>
+                    <div className="video-card-footer" style={{ marginTop: '10px' }}>
                       <span>{story.location}</span>
                       <span style={{ color: 'var(--color-header-green)', fontWeight: 800 }}>▶ Watch</span>
                     </div>
