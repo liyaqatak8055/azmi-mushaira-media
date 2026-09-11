@@ -74,14 +74,22 @@ export default function SyncModal() {
           </div>
 
           <div className="yt-sync-field-group">
-            <label>YouTube Channel ID (Verified)</label>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+              <label style={{ margin: 0 }}>YouTube Channel ID</label>
+              <span style={{ fontSize: '0.72rem', color: '#064e3b', background: '#dcfce7', padding: '2px 8px', borderRadius: '999px', fontWeight: 700 }}>
+                ✅ Pehle Se Set Hai (@AZMIMUSHAIRAMEDIA)
+              </span>
+            </div>
             <input
               type="text"
               className="yt-sync-input"
               value="UCEywUZeMwjUzlFvV64IfiSQ"
               readOnly
-              style={{ background: '#f1f5f9', color: '#64748b' }}
+              style={{ background: '#f8fafc', color: '#334155', fontWeight: 600, cursor: 'not-allowed' }}
             />
+            <small style={{ display: 'block', marginTop: '4px', fontSize: '0.74rem', color: '#16a34a' }}>
+              ✓ Aapke channel ki ID pehle se daali hui hai, ise change karne ki zaroorat nahi hai.
+            </small>
           </div>
 
           <div className="yt-sync-field-group">
