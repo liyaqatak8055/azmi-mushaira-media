@@ -14,7 +14,7 @@ import {
 } from '../data/platformData';
 
 export default function Home() {
-  const { openVideoPlayer, showPlatformToast } = useApp();
+  const { openVideoPlayer, showPlatformToast, feedVideos } = useApp();
 
   // 1. HERO CAROUSEL STATE
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
@@ -114,10 +114,10 @@ export default function Home() {
     });
   };
 
-  // Lead video for Spotlight and Breaking Coverage
-  const leadVideo = PLATFORM_VIDEOS[0];
-  const secondaryStories = PLATFORM_VIDEOS.slice(1, 3);
-  const upNextVideos = PLATFORM_VIDEOS.slice(1, 4);
+  // Lead video for Spotlight and Breaking Coverage (using real-time YouTube uploads if available)
+  const leadVideo = (feedVideos && feedVideos.length > 0) ? feedVideos[0] : PLATFORM_VIDEOS[0];
+  const secondaryStories = (feedVideos && feedVideos.length > 2) ? feedVideos.slice(1, 3) : PLATFORM_VIDEOS.slice(1, 3);
+  const upNextVideos = (feedVideos && feedVideos.length > 3) ? feedVideos.slice(1, 5) : PLATFORM_VIDEOS.slice(1, 4);
   const groundStories = PLATFORM_VIDEOS.filter(v => v.category === "ground" || v.category === "politics").slice(0, 4);
 
   return (

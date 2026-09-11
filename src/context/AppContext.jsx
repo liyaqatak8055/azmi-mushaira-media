@@ -1,8 +1,14 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { fetchYouTubeFeed } from '../services/youtubeFeed';
 
 const AppContext = createContext(null);
 
 export function AppProvider({ children }) {
+  // Real-time YouTube Feed State
+  const [feedVideos, setFeedVideos] = useState([]);
+  const [isFeedLoading, setIsFeedLoading] = useState(false);
+  const [lastFeedSync, setLastFeedSync] = useState(null);
+
   // Video Theater Modal State
   const [activeVideo, setActiveVideo] = useState(null);
 
@@ -22,6 +28,32 @@ export function AppProvider({ children }) {
 
   // Global Toast State
   const [toastMessage, setToastMessage] = useState("");
+
+  const loadYouTubeFeed = async (force = false) => {
+    setIsFeedLoading(true);
+    try {
+      const res = await fetchYouTubeFeed(force);
+      if (res.ok && res.videos?.length > 0) {
+        setFeedVideos(res.videos);
+        setLastFeedSync(res.lastSynced);
+        if (res.hasLive && res.liveVideo) {
+          setIsLiveActive(true);
+          setLiveDetails(res.liveVideo);
+        }
+      }
+      return res;
+    } catch (e) {
+      console.warn("Could not load YouTube feed:", e);
+      return { ok: false };
+    } finally {
+      setIsFeedLoading(false);
+    }
+  };
+
+  // Automatically fetch on mount
+  useEffect(() => {
+    loadYouTubeFeed(false);
+  }, []);
 
   const showPlatformToast = (message) => {
     setToastMessage(message);
@@ -81,6 +113,10 @@ export function AppProvider({ children }) {
   return (
     <AppContext.Provider
       value={{
+        feedVideos,
+        isFeedLoading,
+        lastFeedSync,
+        loadYouTubeFeed,
         activeVideo,
         openVideoPlayer,
         closeVideoPlayer,

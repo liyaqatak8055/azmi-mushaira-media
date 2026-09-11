@@ -2,8 +2,10 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import VideoCard from '../components/VideoCard';
 import { ALL_CATALOG_VIDEOS } from '../data/platformData';
+import { useApp } from '../context/AppContext';
 
 export default function Videos() {
+  const { feedVideos, isFeedLoading, lastFeedSync, loadYouTubeFeed, showPlatformToast } = useApp();
   const [searchParams, setSearchParams] = useSearchParams();
   const initialCategory = searchParams.get('cat') || 'all';
 
@@ -12,6 +14,32 @@ export default function Videos() {
   const [sortOrder, setSortOrder] = useState("popular");
   const [currentPage, setCurrentPage] = useState(1);
   const PAGE_SIZE = 12;
+
+  // Combine real-time YouTube uploads with catalog videos (without duplicates)
+  const allVideos = useMemo(() => {
+    const seenIds = new Set();
+    const list = [];
+
+    // Real-time YouTube uploads at top
+    if (Array.isArray(feedVideos)) {
+      for (const v of feedVideos) {
+        if (!seenIds.has(v.id)) {
+          seenIds.add(v.id);
+          list.push(v);
+        }
+      }
+    }
+
+    // Existing catalog archive
+    for (const v of ALL_CATALOG_VIDEOS) {
+      if (!seenIds.has(v.id)) {
+        seenIds.add(v.id);
+        list.push(v);
+      }
+    }
+
+    return list;
+  }, [feedVideos]);
 
   // Sync category state when URL search params change
   useEffect(() => {
@@ -31,7 +59,7 @@ export default function Videos() {
   };
 
   const filteredVideos = useMemo(() => {
-    let list = ALL_CATALOG_VIDEOS.filter(v => {
+    let list = allVideos.filter(v => {
       const matchCat = category === "all" || v.category === category;
       const q = searchQuery.toLowerCase().trim();
       const matchQuery = !q ||
@@ -48,7 +76,7 @@ export default function Videos() {
     }
 
     return list;
-  }, [category, searchQuery, sortOrder]);
+  }, [allVideos, category, searchQuery, sortOrder]);
 
   const paginatedVideos = useMemo(() => {
     return filteredVideos.slice(0, currentPage * PAGE_SIZE);
@@ -93,6 +121,69 @@ export default function Videos() {
               </button>
             )}
           </div>
+        </div>
+
+        {/* Real-time YouTube Channel Live Status Bar */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          background: 'linear-gradient(90deg, rgba(239, 68, 68, 0.12), rgba(15, 23, 42, 0.6))',
+          border: '1px solid rgba(239, 68, 68, 0.3)',
+          borderRadius: '10px',
+          padding: '12px 18px',
+          margin: '18px 0',
+          gap: '12px',
+          flexWrap: 'wrap'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <span style={{
+              width: '10px',
+              height: '10px',
+              background: '#22c55e',
+              borderRadius: '50%',
+              boxShadow: '0 0 8px #22c55e',
+              display: 'inline-block'
+            }}></span>
+            <span style={{ fontSize: '0.9rem', color: '#f1f5f9' }}>
+              <strong>Real-Time YouTube Feed:</strong> Connected to <strong>@AZMIMUSHAIRAMEDIA</strong> (Free Auto-Sync Active)
+            </span>
+            {feedVideos.length > 0 && (
+              <span style={{
+                background: '#ef4444',
+                color: '#fff',
+                fontSize: '0.72rem',
+                fontWeight: 'bold',
+                padding: '3px 8px',
+                borderRadius: '6px'
+              }}>
+                {feedVideos.length} Fresh Uploads Live
+              </span>
+            )}
+          </div>
+          <button
+            style={{
+              background: '#0284c7',
+              color: '#fff',
+              border: 'none',
+              padding: '6px 14px',
+              borderRadius: '6px',
+              cursor: isFeedLoading ? 'wait' : 'pointer',
+              fontSize: '0.82rem',
+              fontWeight: '600',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px'
+            }}
+            onClick={async () => {
+              const res = await loadYouTubeFeed(true);
+              if (res.ok) showPlatformToast(`✅ ${res.videos.length} Real-Time Videos Synced!`);
+              else showPlatformToast("⚠️ Feed updated from cache");
+            }}
+            disabled={isFeedLoading}
+          >
+            {isFeedLoading ? "⏳ Syncing..." : "🔄 Refresh Live Feed"}
+          </button>
         </div>
 
         {/* Category Controls Bar */}

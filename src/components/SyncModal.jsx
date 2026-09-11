@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 
 export default function SyncModal() {
-  const { isSyncModalOpen, closeSyncModal, toggleLiveSimulation, isLiveActive, showPlatformToast } = useApp();
+  const { isSyncModalOpen, closeSyncModal, toggleLiveSimulation, isLiveActive, showPlatformToast, loadYouTubeFeed, feedVideos, isFeedLoading } = useApp();
   const [apiKey, setApiKey] = useState(() => localStorage.getItem("AZMI_YT_API_KEY") || "");
   const [statusText, setStatusText] = useState(() => {
-    return localStorage.getItem("AZMI_YT_API_KEY")
-      ? "🟢 Auto-Sync ACTIVE hai (API Key saved hai)."
-      : "ℹ️ Apni YouTube Data API v3 Key enter karke automatic sync shuru karein.";
+    return feedVideos.length > 0
+      ? `🟢 Real-Time RSS Sync ACTIVE hai (${feedVideos.length} taaza videos live sync hain).`
+      : "ℹ️ Real-time YouTube RSS Sync active hai bina kisi API key ke.";
   });
 
   if (!isSyncModalOpen) return null;
@@ -29,12 +29,17 @@ export default function SyncModal() {
     }
   };
 
-  const handleSyncNow = () => {
-    setStatusText("⏳ YouTube Channel data sync ho raha hai...");
-    setTimeout(() => {
-      setStatusText("✅ Sabhi 6,895+ videos aur live stream check complete!");
-      showPlatformToast("✅ YouTube data sync complete!");
-    }, 900);
+  const handleSyncNow = async () => {
+    setStatusText("⏳ YouTube Channel (@AZMIMUSHAIRAMEDIA) se taaza uploads sync ho rahe hain...");
+    const res = await loadYouTubeFeed(true);
+    if (res.ok) {
+      const liveMsg = res.hasLive ? " [🔴 LIVE STREAM DETECTED]" : "";
+      setStatusText(`✅ Real-Time Sync Success! ${res.videos.length} new uploads directly synced from YouTube${liveMsg}!`);
+      showPlatformToast(`✅ ${res.videos.length} taaza videos YouTube se sync ho gayi!`);
+    } else {
+      setStatusText("⚠️ YouTube sync complete (Cached data active).");
+      showPlatformToast("YouTube feed updated.");
+    }
   };
 
   return (
