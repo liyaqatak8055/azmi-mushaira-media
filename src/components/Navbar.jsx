@@ -184,14 +184,6 @@ export default function Navbar() {
               <span className="sync-text">{isLiveActive ? "🔴 LIVE NOW" : "Auto-Sync"}</span>
             </button>
 
-            <Link
-              to="/admin"
-              className="btn-header-admin-link"
-              title="Admin Control Center"
-            >
-              ⚙️ Admin
-            </Link>
-
             <a
               href="https://youtube.com/@AZMIMUSHAIRAMEDIA?sub_confirmation=1"
               target="_blank"
@@ -283,9 +275,6 @@ export default function Navbar() {
           </Link>
           <Link to="/contact" className="mobile-link" onClick={() => setIsMobileMenuOpen(false)}>
             <span>Coverage Booking</span> <span className="label-meta">بکنگ</span>
-          </Link>
-          <Link to="/admin" className="mobile-link" onClick={() => setIsMobileMenuOpen(false)} style={{ color: 'var(--color-accent-gold)', fontWeight: 700 }}>
-            <span>⚙️ Admin Control Center</span> <span className="label-meta">انتظام</span>
           </Link>
           <a
             href="https://youtube.com/@AZMIMUSHAIRAMEDIA"

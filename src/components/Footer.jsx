@@ -181,7 +181,13 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="footer-bottom-bar">
           <div>
-            © 2026 <strong>AZMI MUSHAIRA MEDIA</strong> (عظمیٰ مشاعرہ میڈیا). All Rights Reserved.
+            © 2026 <strong 
+              style={{ cursor: 'text', userSelect: 'text' }} 
+              title="" 
+              onDoubleClick={() => navigate('/admin')}
+            >
+              AZMI MUSHAIRA MEDIA
+            </strong> (عظمیٰ مشاعرہ میڈیا). All Rights Reserved.
           </div>
           <div>
             Ground Zero Journalism &amp; Cultural Urdu Heritage
