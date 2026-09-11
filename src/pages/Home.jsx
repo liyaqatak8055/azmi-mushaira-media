@@ -16,18 +16,41 @@ import {
 export default function Home() {
   const { openVideoPlayer, showPlatformToast, syncedVideos } = useApp();
 
-  // Triple set for seamless infinite cycle (5 + 5 + 5 = 15 slides)
+  // Dynamic 20 Carousel Slides from synced YouTube uploads (or fallback to curated PLATFORM_VIDEOS)
+  const baseSlides = useMemo(() => {
+    const sourceList = (syncedVideos && syncedVideos.length > 0) ? syncedVideos : PLATFORM_VIDEOS;
+    const list = sourceList.slice(0, 20);
+    return list.map((video, idx) => ({
+      id: video.id,
+      title: video.title,
+      urduTitle: video.urduTitle || "عظمیٰ مشاعرہ میڈیا آفیشل",
+      badge: video.categoryLabel || (idx === 0 ? "🌟 LATEST UPLOAD" : "📹 NEW RELEASE"),
+      badgeClass: video.category ? `cat-${video.category}` : "cat-mushaira",
+      brandLogo: "AZMI MEDIA HD",
+      location: video.location || "Azmi Media Official",
+      duration: video.duration || "HD Video",
+      thumbnail: video.thumbnail || `https://i.ytimg.com/vi/${video.id}/maxresdefault.jpg`
+    }));
+  }, [syncedVideos]);
+
+  const numSlides = baseSlides.length || 20;
+
+  // Triple set for seamless infinite cycle (20 + 20 + 20 = 60 slides)
   const EXTENDED_SLIDES = useMemo(() => [
-    ...CAROUSEL_SLIDES,
-    ...CAROUSEL_SLIDES,
-    ...CAROUSEL_SLIDES
-  ], []);
+    ...baseSlides,
+    ...baseSlides,
+    ...baseSlides
+  ], [baseSlides]);
 
   // 1. HERO CAROUSEL STATE & CENTERING CALCULATION
-  const [currentSlideIndex, setCurrentSlideIndex] = useState(5);
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(numSlides);
   const [isTransitionEnabled, setIsTransitionEnabled] = useState(true);
   const [isPaused, setIsPaused] = useState(false);
   const [windowWidth, setWindowWidth] = useState(() => typeof window !== 'undefined' ? window.innerWidth : 1200);
+
+  useEffect(() => {
+    setCurrentSlideIndex(numSlides);
+  }, [numSlides]);
 
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
@@ -47,12 +70,13 @@ export default function Home() {
 
   // Seamless boundary wrap on transition end (imperceptible teleport to middle set)
   const handleTransitionEnd = () => {
-    if (currentSlideIndex >= 10) {
+    if (numSlides === 0) return;
+    if (currentSlideIndex >= 2 * numSlides) {
       setIsTransitionEnabled(false);
-      setCurrentSlideIndex(currentSlideIndex - 5);
-    } else if (currentSlideIndex < 5) {
+      setCurrentSlideIndex(currentSlideIndex - numSlides);
+    } else if (currentSlideIndex < numSlides) {
       setIsTransitionEnabled(false);
-      setCurrentSlideIndex(currentSlideIndex + 5);
+      setCurrentSlideIndex(currentSlideIndex + numSlides);
     }
   };
 
@@ -82,7 +106,7 @@ export default function Home() {
   const slideWidth = isMobile ? windowWidth * 0.88 : 860;
   const slideGap = isMobile ? 12 : 22;
   const trackOffset = (windowWidth / 2) - (slideWidth / 2) - (currentSlideIndex * (slideWidth + slideGap));
-  const activeDotIndex = currentSlideIndex % 5;
+  const activeDotIndex = numSlides > 0 ? (currentSlideIndex % numSlides) : 0;
 
   // 2. POPULAR FILTER STATE
   const [popularCategory, setPopularCategory] = useState("all");
@@ -263,21 +287,28 @@ export default function Home() {
             <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" /></svg>
           </button>
 
-          {/* Centered Pagination Dots */}
+          {/* Centered Pagination Indicators */}
           <div className="hero-carousel-dots-container" id="carouselDots">
-            <div className="hero-carousel-dots">
-              {CAROUSEL_SLIDES.map((_, idx) => (
+            <div className="hero-carousel-dots" style={{ flexWrap: 'wrap', justifyContent: 'center', maxWidth: '85%', gap: '6px' }}>
+              {baseSlides.map((_, idx) => (
                 <button
                   key={idx}
                   className={`carousel-dot ${idx === activeDotIndex ? 'active' : ''}`}
                   onClick={() => {
                     setIsTransitionEnabled(true);
-                    setCurrentSlideIndex(5 + idx);
+                    setCurrentSlideIndex(numSlides + idx);
                   }}
                   aria-label={`Go to slide ${idx + 1}`}
+                  style={{
+                    width: idx === activeDotIndex ? (numSlides > 10 ? '22px' : '28px') : (numSlides > 10 ? '6px' : '8px'),
+                    height: numSlides > 10 ? '6px' : '8px'
+                  }}
                 />
               ))}
             </div>
+            <span style={{ marginLeft: '12px', fontSize: '0.76rem', fontWeight: 800, color: 'var(--color-header-green)', background: '#ecfdf5', border: '1px solid rgba(6,78,59,0.18)', padding: '2px 9px', borderRadius: '999px', whiteSpace: 'nowrap' }}>
+              {activeDotIndex + 1} / {numSlides}
+            </span>
           </div>
         </div>
       </section>
