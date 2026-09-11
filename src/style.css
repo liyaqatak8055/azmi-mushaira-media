@@ -4139,15 +4139,18 @@ button, input, select, textarea {
   width: 100%;
   overflow: hidden;
   position: relative;
+  user-select: none;
 }
 
 .channels-train-track {
   display: flex;
   gap: 26px;
+  padding-right: 26px;
   align-items: center;
+  flex-shrink: 0;
   width: max-content;
   will-change: transform;
-  animation: train-marquee 28s linear infinite;
+  animation: train-marquee 40s linear infinite;
 }
 
 .ott-channels-rail:hover .channels-train-track,
@@ -4161,7 +4164,7 @@ button, input, select, textarea {
     transform: translateX(0);
   }
   100% {
-    transform: translateX(-50%);
+    transform: translateX(-100%);
   }
 }
 
@@ -5282,7 +5285,8 @@ button, input, select, textarea {
   }
   .channels-train-track {
     gap: 16px;
-    animation-duration: 20s;
+    padding-right: 16px;
+    animation-duration: 26s;
   }
   .channel-bubble-ring {
     width: 52px;

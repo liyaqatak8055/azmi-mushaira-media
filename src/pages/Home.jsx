@@ -203,6 +203,62 @@ export default function Home() {
     ? videoFeed.filter(v => v.category === "ground" || v.category === "politics").slice(0, 4)
     : PLATFORM_VIDEOS.filter(v => v.category === "ground" || v.category === "politics").slice(0, 4);
 
+  // OTT Channels Marquee Set (duplicated for seamless infinite continuous CSS loop)
+  const marqueeItems = [...CHANNEL_CATEGORIES, ...CHANNEL_CATEGORIES];
+
+  const renderChannelBubble = (cat, key, isClone = false) => {
+    return cat.isExternal ? (
+      <a
+        href={cat.link}
+        key={key}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="channel-bubble"
+        aria-label={cat.label}
+        tabIndex={isClone ? -1 : undefined}
+      >
+        <div
+          className="channel-bubble-ring"
+          style={{
+            background: cat.gradient,
+            borderColor: cat.borderColor,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxShadow: `0 4px 14px ${cat.borderColor}40`
+          }}
+        >
+          <span className="channel-bubble-emoji">{cat.emoji}</span>
+        </div>
+        <span className="channel-bubble-label">{cat.subLabel}</span>
+      </a>
+    ) : (
+      <Link
+        to={cat.link}
+        key={key}
+        className="channel-bubble"
+        aria-label={cat.label}
+        tabIndex={isClone ? -1 : undefined}
+      >
+        <div
+          className={`channel-bubble-ring ${cat.isLive ? 'live' : ''}`}
+          style={{
+            background: cat.gradient,
+            borderColor: cat.borderColor,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxShadow: `0 4px 14px ${cat.borderColor}40`
+          }}
+        >
+          <span className="channel-bubble-emoji">{cat.emoji}</span>
+          {cat.isLive && <span className="channel-bubble-live-badge">LIVE</span>}
+        </div>
+        <span className="channel-bubble-label">{cat.subLabel}</span>
+      </Link>
+    );
+  };
+
   return (
     <main>
       {/* ==========================================================================
@@ -330,56 +386,10 @@ export default function Home() {
       <section className="ott-channels-rail" id="channelsRailStrip">
         <div className="channels-rail-inner" id="channelsRailInner">
           <div className="channels-train-track">
-            {CHANNEL_CATEGORIES.concat(CHANNEL_CATEGORIES).map((cat, i) => (
-              cat.isExternal ? (
-                <a
-                  href={cat.link}
-                  key={i}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="channel-bubble"
-                  aria-label={cat.label}
-                >
-                  <div
-                    className="channel-bubble-ring"
-                    style={{
-                      background: cat.gradient,
-                      borderColor: cat.borderColor,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      boxShadow: `0 4px 14px ${cat.borderColor}40`
-                    }}
-                  >
-                    <span className="channel-bubble-emoji">{cat.emoji}</span>
-                  </div>
-                  <span className="channel-bubble-label">{cat.subLabel}</span>
-                </a>
-              ) : (
-                <Link
-                  to={cat.link}
-                  key={i}
-                  className="channel-bubble"
-                  aria-label={cat.label}
-                >
-                  <div
-                    className={`channel-bubble-ring ${cat.isLive ? 'live' : ''}`}
-                    style={{
-                      background: cat.gradient,
-                      borderColor: cat.borderColor,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      boxShadow: `0 4px 14px ${cat.borderColor}40`
-                    }}
-                  >
-                    <span className="channel-bubble-emoji">{cat.emoji}</span>
-                    {cat.isLive && <span className="channel-bubble-live-badge">LIVE</span>}
-                  </div>
-                  <span className="channel-bubble-label">{cat.subLabel}</span>
-                </Link>
-              )
-            ))}
+            {marqueeItems.map((cat, i) => renderChannelBubble(cat, `track1-${i}`))}
+          </div>
+          <div className="channels-train-track" aria-hidden="true">
+            {marqueeItems.map((cat, i) => renderChannelBubble(cat, `track2-${i}`, true))}
           </div>
         </div>
       </section>
