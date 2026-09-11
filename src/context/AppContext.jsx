@@ -133,7 +133,7 @@ export function AppProvider({ children }) {
             location: "Azmi Media Official",
             views: "🔥 Latest Upload",
             featured: idx === 0,
-            thumbnail: item.snippet.thumbnails?.high?.url || `https://i.ytimg.com/vi/${item.id.videoId}/hqdefault.jpg`
+            thumbnail: item.snippet.thumbnails?.maxres?.url || item.snippet.thumbnails?.standard?.url || `https://i.ytimg.com/vi/${item.id.videoId}/maxresdefault.jpg`
           };
         });
 

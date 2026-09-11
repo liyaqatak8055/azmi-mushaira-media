@@ -28,8 +28,9 @@ export default function Home() {
       badgeClass: video.category ? `cat-${video.category}` : "cat-mushaira",
       brandLogo: "AZMI MEDIA HD",
       location: video.location || "Azmi Media Official",
-      duration: video.duration || "HD Video",
-      thumbnail: video.thumbnail || `https://i.ytimg.com/vi/${video.id}/maxresdefault.jpg`
+      thumbnail: (video.thumbnail && video.thumbnail.includes('hqdefault.jpg'))
+        ? video.thumbnail.replace('hqdefault.jpg', 'maxresdefault.jpg')
+        : (video.thumbnail || `https://i.ytimg.com/vi/${video.id}/maxresdefault.jpg`)
     }));
   }, [syncedVideos]);
 
@@ -202,6 +203,14 @@ export default function Home() {
   const groundStories = videoFeed.filter(v => v.category === "ground" || v.category === "politics").length >= 4
     ? videoFeed.filter(v => v.category === "ground" || v.category === "politics").slice(0, 4)
     : PLATFORM_VIDEOS.filter(v => v.category === "ground" || v.category === "politics").slice(0, 4);
+
+  const getHdThumb = (v) => {
+    if (!v) return "";
+    if (v.thumbnail && v.thumbnail.includes('hqdefault.jpg')) {
+      return v.thumbnail.replace('hqdefault.jpg', 'maxresdefault.jpg');
+    }
+    return v.thumbnail || `https://i.ytimg.com/vi/${v.id}/maxresdefault.jpg`;
+  };
 
   // OTT Channels Marquee Set (duplicated for seamless infinite continuous CSS loop)
   const marqueeItems = [...CHANNEL_CATEGORIES, ...CHANNEL_CATEGORIES];
@@ -407,7 +416,7 @@ export default function Home() {
               <div className="featured-video-media">
                 <img
                   className="featured-video-thumb"
-                  src={leadVideo.thumbnail}
+                  src={getHdThumb(leadVideo)}
                   alt={leadVideo.title}
                   onError={(e) => {
                     e.currentTarget.onerror = null;
@@ -486,7 +495,7 @@ export default function Home() {
                   >
                     <div className="upnext-thumb-wrap">
                       <img
-                        src={video.thumbnail}
+                        src={getHdThumb(video)}
                         alt={video.title}
                         loading="lazy"
                         onError={(e) => {
@@ -538,7 +547,7 @@ export default function Home() {
             >
               <div className="breaking-media-box">
                 <img
-                  src={leadVideo.thumbnail}
+                  src={getHdThumb(leadVideo)}
                   alt={leadVideo.title}
                   onError={(e) => {
                     e.currentTarget.onerror = null;
@@ -578,7 +587,7 @@ export default function Home() {
                 >
                   <div className="breaking-media-box">
                     <img
-                      src={story.thumbnail}
+                      src={getHdThumb(story)}
                       alt={story.title}
                       onError={(e) => {
                         e.currentTarget.onerror = null;

@@ -15,7 +15,7 @@ export const PLATFORM_VIDEOS = [
     location: "Uttar Pradesh",
     views: "Trending 🔥",
     featured: true,
-    thumbnail: "https://i.ytimg.com/vi/RQj92m7s9tQ/hqdefault.jpg"
+    thumbnail: "https://i.ytimg.com/vi/RQj92m7s9tQ/maxresdefault.jpg"
   },
   {
     id: "gELiv6WJm0I",
@@ -28,7 +28,7 @@ export const PLATFORM_VIDEOS = [
     location: "Saharanpur, UP",
     views: "Viral ⭐",
     featured: false,
-    thumbnail: "https://i.ytimg.com/vi/gELiv6WJm0I/hqdefault.jpg"
+    thumbnail: "https://i.ytimg.com/vi/gELiv6WJm0I/maxresdefault.jpg"
   },
   {
     id: "f-NJP3ssVDA",
@@ -41,7 +41,7 @@ export const PLATFORM_VIDEOS = [
     location: "Rajasthan",
     views: "Popular",
     featured: false,
-    thumbnail: "https://i.ytimg.com/vi/f-NJP3ssVDA/hqdefault.jpg"
+    thumbnail: "https://i.ytimg.com/vi/f-NJP3ssVDA/maxresdefault.jpg"
   },
   {
     id: "sYi5H3UqLCM",
@@ -54,7 +54,7 @@ export const PLATFORM_VIDEOS = [
     location: "Lucknow, UP",
     views: "Trending",
     featured: false,
-    thumbnail: "https://i.ytimg.com/vi/sYi5H3UqLCM/hqdefault.jpg"
+    thumbnail: "https://i.ytimg.com/vi/sYi5H3UqLCM/maxresdefault.jpg"
   },
   {
     id: "oc8dFJ6Wa8U",
@@ -67,7 +67,7 @@ export const PLATFORM_VIDEOS = [
     location: "Jaipur",
     views: "Popular",
     featured: false,
-    thumbnail: "https://i.ytimg.com/vi/oc8dFJ6Wa8U/hqdefault.jpg"
+    thumbnail: "https://i.ytimg.com/vi/oc8dFJ6Wa8U/maxresdefault.jpg"
   },
   {
     id: "PeOlbjEVkoo",
@@ -80,7 +80,7 @@ export const PLATFORM_VIDEOS = [
     location: "Rajasthan",
     views: "High Views",
     featured: false,
-    thumbnail: "https://i.ytimg.com/vi/PeOlbjEVkoo/hqdefault.jpg"
+    thumbnail: "https://i.ytimg.com/vi/PeOlbjEVkoo/maxresdefault.jpg"
   },
   {
     id: "KjhqJla78Zw",
@@ -93,7 +93,7 @@ export const PLATFORM_VIDEOS = [
     location: "Jaipur",
     views: "Viral",
     featured: false,
-    thumbnail: "https://i.ytimg.com/vi/KjhqJla78Zw/hqdefault.jpg"
+    thumbnail: "https://i.ytimg.com/vi/KjhqJla78Zw/maxresdefault.jpg"
   },
   {
     id: "PSbF9WFT68M",
@@ -106,7 +106,7 @@ export const PLATFORM_VIDEOS = [
     location: "Jaipur",
     views: "Top Viewed",
     featured: false,
-    thumbnail: "https://i.ytimg.com/vi/PSbF9WFT68M/hqdefault.jpg"
+    thumbnail: "https://i.ytimg.com/vi/PSbF9WFT68M/maxresdefault.jpg"
   },
   {
     id: "Nnmk3rFo-yE",
@@ -119,7 +119,7 @@ export const PLATFORM_VIDEOS = [
     location: "UP Ground",
     views: "Trending",
     featured: false,
-    thumbnail: "https://i.ytimg.com/vi/Nnmk3rFo-yE/hqdefault.jpg"
+    thumbnail: "https://i.ytimg.com/vi/Nnmk3rFo-yE/maxresdefault.jpg"
   },
   {
     id: "-saYXyKGPIk",
@@ -132,7 +132,7 @@ export const PLATFORM_VIDEOS = [
     location: "Uttar Pradesh",
     views: "Popular",
     featured: false,
-    thumbnail: "https://i.ytimg.com/vi/-saYXyKGPIk/hqdefault.jpg"
+    thumbnail: "https://i.ytimg.com/vi/-saYXyKGPIk/maxresdefault.jpg"
   },
   {
     id: "eqWiFeML1-E",
@@ -145,7 +145,7 @@ export const PLATFORM_VIDEOS = [
     location: "Bihar / UP",
     views: "Trending",
     featured: false,
-    thumbnail: "https://i.ytimg.com/vi/eqWiFeML1-E/hqdefault.jpg"
+    thumbnail: "https://i.ytimg.com/vi/eqWiFeML1-E/maxresdefault.jpg"
   },
   {
     id: "XZbLbMeiBKQ",
@@ -158,7 +158,7 @@ export const PLATFORM_VIDEOS = [
     location: "Ground Zero",
     views: "Viral",
     featured: false,
-    thumbnail: "https://i.ytimg.com/vi/XZbLbMeiBKQ/hqdefault.jpg"
+    thumbnail: "https://i.ytimg.com/vi/XZbLbMeiBKQ/maxresdefault.jpg"
   }
 ];
 
@@ -174,7 +174,7 @@ export const POPULAR_CHANNEL_VIDEOS = [
     duration: "18:25",
     location: "Uttar Pradesh",
     date: "All-Time Superhit",
-    thumbnail: "https://i.ytimg.com/vi/PSbF9WFT68M/hqdefault.jpg"
+    thumbnail: "https://i.ytimg.com/vi/PSbF9WFT68M/maxresdefault.jpg"
   },
   {
     id: "gELiv6WJm0I",
@@ -187,7 +187,7 @@ export const POPULAR_CHANNEL_VIDEOS = [
     duration: "12:15",
     location: "Purvanchal, UP",
     date: "Viral Hit",
-    thumbnail: "https://i.ytimg.com/vi/gELiv6WJm0I/hqdefault.jpg"
+    thumbnail: "https://i.ytimg.com/vi/gELiv6WJm0I/maxresdefault.jpg"
   },
   {
     id: "VJ7gDXyOSCY",
@@ -200,7 +200,7 @@ export const POPULAR_CHANNEL_VIDEOS = [
     duration: "15:40",
     location: "All India Stage",
     date: "Golden Kalam",
-    thumbnail: "https://i.ytimg.com/vi/VJ7gDXyOSCY/hqdefault.jpg"
+    thumbnail: "https://i.ytimg.com/vi/VJ7gDXyOSCY/maxresdefault.jpg"
   },
   {
     id: "KjhqJla78Zw",
@@ -213,7 +213,7 @@ export const POPULAR_CHANNEL_VIDEOS = [
     duration: "16:10",
     location: "Jaipur, Rajasthan",
     date: "Superhit",
-    thumbnail: "https://i.ytimg.com/vi/KjhqJla78Zw/hqdefault.jpg"
+    thumbnail: "https://i.ytimg.com/vi/KjhqJla78Zw/maxresdefault.jpg"
   },
   {
     id: "RQj92m7s9tQ",
@@ -226,7 +226,7 @@ export const POPULAR_CHANNEL_VIDEOS = [
     duration: "14:20",
     location: "Uttar Pradesh",
     date: "Trending",
-    thumbnail: "https://i.ytimg.com/vi/RQj92m7s9tQ/hqdefault.jpg"
+    thumbnail: "https://i.ytimg.com/vi/RQj92m7s9tQ/maxresdefault.jpg"
   },
   {
     id: "ia-NPOE6NFs",
@@ -239,7 +239,7 @@ export const POPULAR_CHANNEL_VIDEOS = [
     duration: "21:30",
     location: "Azamgarh, UP",
     date: "Mushaira Special",
-    thumbnail: "https://i.ytimg.com/vi/ia-NPOE6NFs/hqdefault.jpg"
+    thumbnail: "https://i.ytimg.com/vi/ia-NPOE6NFs/maxresdefault.jpg"
   },
   {
     id: "-saYXyKGPIk",
@@ -252,7 +252,7 @@ export const POPULAR_CHANNEL_VIDEOS = [
     duration: "17:45",
     location: "Azamgarh Stage",
     date: "Classic Mehfil",
-    thumbnail: "https://i.ytimg.com/vi/-saYXyKGPIk/hqdefault.jpg"
+    thumbnail: "https://i.ytimg.com/vi/-saYXyKGPIk/maxresdefault.jpg"
   },
   {
     id: "Nnmk3rFo-yE",
@@ -265,7 +265,7 @@ export const POPULAR_CHANNEL_VIDEOS = [
     duration: "13:10",
     location: "Saharanpur / Sambhal",
     date: "Viral Speech",
-    thumbnail: "https://i.ytimg.com/vi/Nnmk3rFo-yE/hqdefault.jpg"
+    thumbnail: "https://i.ytimg.com/vi/Nnmk3rFo-yE/maxresdefault.jpg"
   },
   {
     id: "eqWiFeML1-E",
@@ -278,7 +278,7 @@ export const POPULAR_CHANNEL_VIDEOS = [
     duration: "11:45",
     location: "Bihar / UP",
     date: "Ekta Special",
-    thumbnail: "https://i.ytimg.com/vi/eqWiFeML1-E/hqdefault.jpg"
+    thumbnail: "https://i.ytimg.com/vi/eqWiFeML1-E/maxresdefault.jpg"
   },
   {
     id: "PeOlbjEVkoo",
@@ -291,7 +291,7 @@ export const POPULAR_CHANNEL_VIDEOS = [
     duration: "19:40",
     location: "Hyderabad / UP",
     date: "Fiery Speech",
-    thumbnail: "https://i.ytimg.com/vi/PeOlbjEVkoo/hqdefault.jpg"
+    thumbnail: "https://i.ytimg.com/vi/PeOlbjEVkoo/maxresdefault.jpg"
   },
   {
     id: "f-NJP3ssVDA",
@@ -304,7 +304,7 @@ export const POPULAR_CHANNEL_VIDEOS = [
     duration: "10:35",
     location: "Rajasthan",
     date: "Viral",
-    thumbnail: "https://i.ytimg.com/vi/f-NJP3ssVDA/hqdefault.jpg"
+    thumbnail: "https://i.ytimg.com/vi/f-NJP3ssVDA/maxresdefault.jpg"
   },
   {
     id: "sYi5H3UqLCM",
@@ -317,7 +317,7 @@ export const POPULAR_CHANNEL_VIDEOS = [
     duration: "15:10",
     location: "Delhi / Lucknow",
     date: "Adab Special",
-    thumbnail: "https://i.ytimg.com/vi/sYi5H3UqLCM/hqdefault.jpg"
+    thumbnail: "https://i.ytimg.com/vi/sYi5H3UqLCM/maxresdefault.jpg"
   }
 ];
 
@@ -335,7 +335,7 @@ export const ALL_CATALOG_VIDEOS = [
     duration: "16:20",
     location: "Uttar Pradesh",
     date: "Popular",
-    thumbnail: "https://i.ytimg.com/vi/-Kdzl967w6o/hqdefault.jpg"
+    thumbnail: "https://i.ytimg.com/vi/-Kdzl967w6o/maxresdefault.jpg"
   },
   {
     id: "oc8dFJ6Wa8U",
@@ -348,7 +348,7 @@ export const ALL_CATALOG_VIDEOS = [
     duration: "11:20",
     location: "Jaipur",
     date: "Exclusive",
-    thumbnail: "https://i.ytimg.com/vi/oc8dFJ6Wa8U/hqdefault.jpg"
+    thumbnail: "https://i.ytimg.com/vi/oc8dFJ6Wa8U/maxresdefault.jpg"
   },
   {
     id: "-saYXyKGPIk",
@@ -361,7 +361,7 @@ export const ALL_CATALOG_VIDEOS = [
     duration: "18:50",
     location: "Azamgarh Sharif",
     date: "Deeni Mehfil",
-    thumbnail: "https://i.ytimg.com/vi/-saYXyKGPIk/hqdefault.jpg"
+    thumbnail: "https://i.ytimg.com/vi/-saYXyKGPIk/maxresdefault.jpg"
   },
   {
     id: "VJ7gDXyOSCY",
@@ -374,7 +374,7 @@ export const ALL_CATALOG_VIDEOS = [
     duration: "14:15",
     location: "Deeni Stage",
     date: "Spiritual",
-    thumbnail: "https://i.ytimg.com/vi/VJ7gDXyOSCY/hqdefault.jpg"
+    thumbnail: "https://i.ytimg.com/vi/VJ7gDXyOSCY/maxresdefault.jpg"
   },
   {
     id: "XZbLbMeiBKQ",
@@ -387,7 +387,7 @@ export const ALL_CATALOG_VIDEOS = [
     duration: "14:10",
     location: "Ground Zero",
     date: "Special",
-    thumbnail: "https://i.ytimg.com/vi/XZbLbMeiBKQ/hqdefault.jpg"
+    thumbnail: "https://i.ytimg.com/vi/XZbLbMeiBKQ/maxresdefault.jpg"
   },
   {
     id: "RQj92m7s9tQ",
@@ -400,7 +400,7 @@ export const ALL_CATALOG_VIDEOS = [
     duration: "16:45",
     location: "Lucknow Stage",
     date: "Golden Stage",
-    thumbnail: "https://i.ytimg.com/vi/RQj92m7s9tQ/hqdefault.jpg"
+    thumbnail: "https://i.ytimg.com/vi/RQj92m7s9tQ/maxresdefault.jpg"
   }
 ];
 
@@ -412,7 +412,7 @@ export const MUSHAIRA_PERFORMANCES = [
     title: "All India Mushaira - Hamza Ayaz Bijnori Ka Zabardast Kalam",
     urduExcerpt: "یہ ہمارا وطن ہے، ہماری زمیں ہے / ہم نے اس خاک کو خونِ جگر دیا ہے",
     location: "All India Mushaira Stage",
-    thumbnail: "https://i.ytimg.com/vi/VJ7gDXyOSCY/hqdefault.jpg"
+    thumbnail: "https://i.ytimg.com/vi/VJ7gDXyOSCY/maxresdefault.jpg"
   },
   {
     id: "RQj92m7s9tQ",
@@ -421,7 +421,7 @@ export const MUSHAIRA_PERFORMANCES = [
     title: "Shabina Adeeb, Johar Kanpuri & Rahat Indori Memorial Kalam Coverage",
     urduExcerpt: "سلیقہ گفتگو کا ہو تو محفل جھوم اٹھتی ہے / محبت کے ترانے جب کوئی شاعر سناتا ہے",
     location: "Azamgarh Adabi Mehfil",
-    thumbnail: "https://i.ytimg.com/vi/RQj92m7s9tQ/hqdefault.jpg"
+    thumbnail: "https://i.ytimg.com/vi/RQj92m7s9tQ/maxresdefault.jpg"
   },
   {
     id: "-saYXyKGPIk",
@@ -430,7 +430,7 @@ export const MUSHAIRA_PERFORMANCES = [
     title: "Naat-e-Mustafa ﷺ aur Manqabat - Pur-Noor Deeni Mehfil",
     urduExcerpt: "رخِ مصطفیٰ ﷺ کی تجلی سے روشن زمانے ہوئے / کرم کے اشارے ہوئے، لطف کے سلسلے ہو گئے",
     location: "Jalsa & Naat Mehfil",
-    thumbnail: "https://i.ytimg.com/vi/-saYXyKGPIk/hqdefault.jpg"
+    thumbnail: "https://i.ytimg.com/vi/-saYXyKGPIk/maxresdefault.jpg"
   },
   {
     id: "gELiv6WJm0I",
@@ -439,7 +439,7 @@ export const MUSHAIRA_PERFORMANCES = [
     title: "All India Tarahi Mushaira - Mehfil-e-Shayari Aur Ghazal Khwani",
     urduExcerpt: "تیرے جانے کے بعد بھی دل میں / روشنی سی رہ گئی ہے مکان میں",
     location: "Delhi Historic Mehfil",
-    thumbnail: "https://i.ytimg.com/vi/gELiv6WJm0I/hqdefault.jpg"
+    thumbnail: "https://i.ytimg.com/vi/gELiv6WJm0I/maxresdefault.jpg"
   }
 ];
 
@@ -458,7 +458,7 @@ export const PLATFORM_SHORTS = [
     urduTitle: "حمزہ ایاز بجنوری کی شاندار شاعری",
     views: "50K+ Views",
     duration: "0:58",
-    thumbnail: "https://i.ytimg.com/vi/VJ7gDXyOSCY/hqdefault.jpg"
+    thumbnail: "https://i.ytimg.com/vi/VJ7gDXyOSCY/maxresdefault.jpg"
   },
   {
     id: "XZbLbMeiBKQ",
@@ -466,7 +466,7 @@ export const PLATFORM_SHORTS = [
     urduTitle: "دلت مسلم اتحاد - منجیت سنگھ نوٹیال",
     views: "35K+ Views",
     duration: "0:45",
-    thumbnail: "https://i.ytimg.com/vi/XZbLbMeiBKQ/hqdefault.jpg"
+    thumbnail: "https://i.ytimg.com/vi/XZbLbMeiBKQ/maxresdefault.jpg"
   },
   {
     id: "-saYXyKGPIk",
@@ -474,7 +474,7 @@ export const PLATFORM_SHORTS = [
     urduTitle: "بیرسٹر اسد الدین اویسی کا بیان",
     views: "60K+ Views",
     duration: "0:55",
-    thumbnail: "https://i.ytimg.com/vi/-saYXyKGPIk/hqdefault.jpg"
+    thumbnail: "https://i.ytimg.com/vi/-saYXyKGPIk/maxresdefault.jpg"
   },
   {
     id: "ia-NPOE6NFs",
@@ -482,7 +482,7 @@ export const PLATFORM_SHORTS = [
     urduTitle: "اسرار احمد کا بیان - اعظم گڑھ و یوپی",
     views: "28K+ Views",
     duration: "0:40",
-    thumbnail: "https://i.ytimg.com/vi/ia-NPOE6NFs/hqdefault.jpg"
+    thumbnail: "https://i.ytimg.com/vi/ia-NPOE6NFs/maxresdefault.jpg"
   },
   {
     id: "eqWiFeML1-E",
@@ -490,7 +490,7 @@ export const PLATFORM_SHORTS = [
     urduTitle: "من موہن جھا گاما کا خطاب",
     views: "24K+ Views",
     duration: "0:52",
-    thumbnail: "https://i.ytimg.com/vi/eqWiFeML1-E/hqdefault.jpg"
+    thumbnail: "https://i.ytimg.com/vi/eqWiFeML1-E/maxresdefault.jpg"
   },
   {
     id: "-Kdzl967w6o",
@@ -498,7 +498,7 @@ export const PLATFORM_SHORTS = [
     urduTitle: "آج آپ کو پہچاننا پڑے گا - اویسی",
     views: "42K+ Views",
     duration: "0:50",
-    thumbnail: "https://i.ytimg.com/vi/-Kdzl967w6o/hqdefault.jpg"
+    thumbnail: "https://i.ytimg.com/vi/-Kdzl967w6o/maxresdefault.jpg"
   }
 ];
 

@@ -8,6 +8,10 @@ export default function VideoCard({ video, variant = 'editorial', index = 0 }) {
     openVideoPlayer(video.id, video.title, video.urduTitle || video.poet || "");
   };
 
+  const thumbUrl = (video.thumbnail && video.thumbnail.includes('hqdefault.jpg'))
+    ? video.thumbnail.replace('hqdefault.jpg', 'maxresdefault.jpg')
+    : (video.thumbnail || `https://i.ytimg.com/vi/${video.id}/maxresdefault.jpg`);
+
   const handleImgError = (e) => {
     e.currentTarget.onerror = null;
     e.currentTarget.src = `https://i.ytimg.com/vi/${video.id}/hqdefault.jpg`;
@@ -31,7 +35,7 @@ export default function VideoCard({ video, variant = 'editorial', index = 0 }) {
     return (
       <article className="popular-video-card" onClick={handleClick}>
         <div className="video-card-thumb-frame">
-          <img src={video.thumbnail} alt={video.title} loading={index < 4 ? 'eager' : 'lazy'} onError={handleImgError} />
+          <img src={thumbUrl} alt={video.title} loading={index < 4 ? 'eager' : 'lazy'} onError={handleImgError} />
           <div className="card-play-hover-indicator">
             <div className="card-play-disc">
               <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
@@ -61,7 +65,7 @@ export default function VideoCard({ video, variant = 'editorial', index = 0 }) {
     return (
       <article className="mushaira-entry-card" onClick={handleClick}>
         <div className="video-card-thumb-frame">
-          <img src={video.thumbnail} alt={video.title} loading="lazy" onError={handleImgError} />
+          <img src={thumbUrl} alt={video.title} loading="lazy" onError={handleImgError} />
           <div className="card-play-hover-indicator">
             <div className="card-play-disc">
               <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
@@ -91,7 +95,7 @@ export default function VideoCard({ video, variant = 'editorial', index = 0 }) {
   if (variant === 'short') {
     return (
       <article className="short-vertical-card" onClick={handleClick}>
-        <img src={video.thumbnail} alt={video.title} loading="lazy" onError={handleImgError} />
+        <img src={thumbUrl} alt={video.title} loading="lazy" onError={handleImgError} />
         <div className="short-vertical-overlay">
           <span className="short-pill-badge">⚡ Shorts</span>
           <h3 className="short-card-title">{video.title}</h3>
@@ -106,7 +110,7 @@ export default function VideoCard({ video, variant = 'editorial', index = 0 }) {
     return (
       <article className="ground-story-card" onClick={handleClick}>
         <div className="video-card-thumb-frame">
-          <img src={video.thumbnail} alt={video.title} loading="lazy" onError={handleImgError} />
+          <img src={thumbUrl} alt={video.title} loading="lazy" onError={handleImgError} />
           <div className="card-play-hover-indicator">
             <div className="card-play-disc">
               <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
@@ -153,7 +157,7 @@ export default function VideoCard({ video, variant = 'editorial', index = 0 }) {
   return (
     <article className="editorial-video-card" onClick={handleClick}>
       <div className="video-card-thumb-frame">
-        <img src={video.thumbnail} alt={video.title} loading={index < 4 ? 'eager' : 'lazy'} onError={handleImgError} />
+        <img src={thumbUrl} alt={video.title} loading={index < 4 ? 'eager' : 'lazy'} onError={handleImgError} />
         <div className="card-play-hover-indicator">
           <div className="card-play-disc">
             <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
